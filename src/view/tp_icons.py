@@ -1,0 +1,52 @@
+from PIL import Image, ImageTk
+import base64
+import io
+
+
+def setup_icons(view):
+
+	size = 50,50
+	view.icons = {}
+
+	data = 'iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAACXBIWXMAAAsTAAALEwEAmpwYAAAD70lEQVR4nO2dTW9NQRiAR6nERyRaFqi0FmyUWNBgbaG21QZr/IX62JLGti39D6QWZeEn2JLaSYU2gvoIoZ+SR8adxnX09p6j9868Z+Z9kpvc5N575sw8d2bOzHlnjjGKoiiKoiiKopQBoBXYEPo8FPNbxgDwBfgG9GuhBAZ4xx/ehj6f5CFD8gUSGlSILFAhskCFyAIVIgtUiCxQIbJAhcgCFVK3gHYAZ4F9sQoBOoFeYJuRDLAdeOnK5gfQF5sQ4Dww75J7AWw1UgHOZcpn2WYgFiFUZNg8VXPGSAU4ACz4lAJMVaU15VmGrSn7jWRqnHjTpFBpy2fcqzeGPDUc23cAS5kM/AQumZJB7bxcNGUiBinEIiMGKcQmo8xSiFVGGTtFSnSuzcjoInDQCAE4tErNiE9GHSm5Mwu0ACeBG8A4MAl8doW45N5Pus+uu++2FDh+fzIyMlJszbBMA205ftMBDLmxRlGm3W87cqTT7r6/UnvjlrGCbaZcx9mWo4DGqgSuBzuDcM8es06abe7cxDSlIgAuAB9pPLM2uC50/koDsMnVimZz16YVOr+iAbYAj/DHhE0zdL5FAmwEHuKfx1pTVhcyRjhG/f8F5XfgodHI+arLTHvlExp7RbfLpE7gpirLiEkZNwJvxKCvUSz4ipYRiZvSkMZtkyJuovAN8pixl+AmNdxMrFR6TGoAN5HLoEmNQKPyvDwwqeFuJEnluZEKcKcqlrUIU2sFrgGfkMus7/LIK+PYOjM2s8axJY0/siz4Lg8VUkYhVYM3u7SgKLE2WUPNKI/gaKcuDBeqI5X7JjVcbJVUBk1qCJ86OWFSQ/Dk4usi0Y5RodPvMm9QZdckhiTtG1QWF94phWGTOi7I4YOQIIf20OUhaSPL0KQR6Z4XF2sbCm2qaoSSjgeQYWOJNeh6jWDrCY8yNNg653KEUQ8yhrVmFOtT+pt09fVeO/B/C3sPcLzeFAWVS+KRBg0e512t2Fknzc3AaWC3SQG3fm/OFdKTPPNGwF4bUfifc192buqWPUbO5vKp+913H/t9SVwWfbTghGQPcM2G6tjoEHfncdG97Ptn7rNBO2tbcFn0qWSWRdeQMSdpCQCVpnQ+eilrbFfRJ7RJXY5WShk3cqGEG+ZEKyNaKWWWEZ2UAPsutjbrGVSl364pgIyBZj+DqrRSgCO+95vC0zOoakixee02UgGu+v4XkaHJaa0m5YqRCtAFfPW53xQehVRJWWkFbF47jWSclMvAYU/p/YWnNLtdHrt8pFcqyBD6fJIHFSILVIgsUCGyQIXIAhUiC1SILFAhskCFyAJ45eMZVIqgZ1ApiqIoiqIoiqKYiPkFlhhALXvfZJQAAAAASUVORK5CYII='
+	view.sunny_icon2 = decode_base65_image_driver(size, data)
+	view.icons["sunny"] = view.sunny_icon2
+
+	data = "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"
+	view.cloudy_icon2 = decode_base65_image_driver(size, data)
+	view.icons["cloudy"] = view.cloudy_icon2
+	
+def setup_driver_images(view, data):
+	size = 400, 400
+	view.driver_images = {}
+
+	for driver in data.keys():
+		img_data = data[driver]
+		view.driver_icon2 = decode_base65_image_driver(size, img_data)
+		view.driver_images[driver] = view.driver_icon2
+
+def decode_base65_image_driver(size, data):
+	im = Image.open(io.BytesIO(base64.b64decode(data)))
+
+	return im
+
+def create_track_map(view, name, img_data):
+	size = 1536, 767
+
+	view.track_icon2 = decode_base65_image_driver(size, img_data)
+	view.track_maps[name] = view.track_icon2
+
+
+def decode_base64_image(size, data):
+
+	msg = base64.b64decode(data)
+	buf = io.BytesIO(msg)
+	
+	i = Image.open(buf)
+	i.thumbnail(size, Image.ANTIALIAS)
+	
+	# adding transparent padding before text
+	#new_image = Image.new('RGBA', (size[0]+5, size[1]), (0, 0, 0, 0))
+	#new_image.paste(i, (0, 0))
+	
+	return i
