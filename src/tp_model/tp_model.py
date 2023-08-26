@@ -12,6 +12,7 @@ class TPModel:
 		self.setup_default_drivers()
 		self.setup_default_teams()
 		self.setup_tracks()
+		self.season.setup_new_season(update_year=False)
 
 	def setup_variables(self):
 		self.drivers = []
@@ -93,8 +94,13 @@ class TPModel:
 		driver = self.get_driver_from_name(driver)
 		data["age"] = driver.age
 		data["nationality"] = driver.nationality
+		data["hometown"] = driver.hometown
+		data["team"] = driver.team.name
 		data["championships"] = driver.championships
 		data["wins"] = driver.wins
+		data["races"] = driver.races
+		data["podiums"] = driver.podiums
+		data["seasons_data"] = driver.season_stats_df.values.tolist()
 
 		return data
 
@@ -166,12 +172,29 @@ class TPModel:
 		self.race_result = [[d.name, d.team.name] for d in self.drivers]
 		random.shuffle(self.race_result)
 		self.season.update_standings(self.race_result)
+		self.update_driver_stats(self.race_result)
 
 		self.in_race_week = False
 		self.season.current_round += 1
 
 		if self.season.current_round == len(self.season.calender):
-			self.season.current_round = "off_season"
+			self.season.end_season()
 
 	def get_driver_image_data(self):
 		return {d.name: d.image_data for d in self.drivers}
+	
+	def update_driver_stats(self, race_result):
+		for idx, d in enumerate(race_result):
+			driver = self.get_driver_from_name(d[0])
+			driver.races += 1
+			driver.season_stats_df.loc[self.season.year, "Races"] += 1
+
+			if idx == 0: # wins
+				driver.wins += 1
+				driver.podiums += 1
+				driver.season_stats_df.loc[self.season.year, "Wins"] += 1
+				driver.season_stats_df.loc[self.season.year, "Podiums"] += 1
+			
+			if idx == 1 or idx == 2: # Podiums
+				driver.podiums += 1
+				driver.season_stats_df.loc[self.season.year, "Podiums"] += 1

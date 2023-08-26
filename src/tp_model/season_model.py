@@ -77,10 +77,23 @@ class Season:
 		self.current_week += 1
 		self.current_round += 1
 
-	def setup_new_season(self):
+	def end_season(self):
+		self.current_round = "off_season"
+		self.champion = self.driver_standings[0][0]
+		self.model.get_driver_from_name(self.champion).championships += 1
+
+	def setup_new_season(self, update_year=True):
 		self.current_week = 1
 		self.current_round = 0
-		self.year += 1
+		
+		if update_year is True:
+			self.year += 1
+
+		# Add new row to driver statistics
+		for driver in self.model.drivers:
+			driver.season_stats_df.loc[self.year] = 0
+			driver.season_stats_df.at[self.year, "Year"] = self.year
+			
 
 		self.setup_initial_standings()
 

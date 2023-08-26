@@ -1,17 +1,24 @@
 import logging
 import random
 
+import pandas as pd
+
 class Driver:
-	def __init__(self, model, image_data, nationality, name, age, championships=0, wins=0, speed=70, consistency=70):
+	def __init__(self, model, image_data, nationality, name, age, hometown="",
+	      championships=0, wins=0, races=0, podiums=0, speed=70, consistency=70):
 		self.model = model
 		self.image_data = image_data
 		self.nationality = nationality
+		self.hometown = hometown
 		self.name = name
 		self.age = age
 		self.championships = championships
 		self.wins = wins
+		self.races = races
+		self.podiums = podiums
 		self.speed = speed
 		self.consistency = consistency
+		
 		self.setup_variables()
 
 	def setup_variables(self):
@@ -20,6 +27,8 @@ class Driver:
 		self.week_to_annouce_retirement = 3
 
 		self.team = None
+
+		self.season_stats_df = pd.DataFrame(columns=["Year", "Races", "Wins", "Podiums"])
 
 	def calculate_laptime(self, track):
 		# Simulate laptime calculation based on driver's speed and track's grip
@@ -56,6 +65,7 @@ class Driver:
 
 	def increase_age(self):
 		self.age += 1
+
 
 if __name__ == "__main__":
 	import track_model

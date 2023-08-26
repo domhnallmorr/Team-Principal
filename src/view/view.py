@@ -90,7 +90,17 @@ class View:
 										header_font=self.tksheet_normal_font,
 										index_font=self.tksheet_normal_font,
 										)
-	
+
+	def update_tksheet_table(self, table, data):
+
+		table.set_sheet_data(data=data,
+               reset_col_positions=False,
+               reset_row_positions=True,
+               redraw=True,
+               verify=False,
+               reset_highlights=False)
+
+
 	def setup_driver_images(self, data):
 		tp_icons.setup_driver_images(self, data)
 		
