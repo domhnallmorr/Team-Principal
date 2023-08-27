@@ -82,6 +82,10 @@ class Season:
 		self.champion = self.driver_standings[0][0]
 		self.model.get_driver_from_name(self.champion).championships += 1
 
+		# Random change in car speed
+		for team in self.model.teams:
+			team.car.update_car_speed()
+
 	def setup_new_season(self, update_year=True):
 		self.current_week = 1
 		self.current_round = 0

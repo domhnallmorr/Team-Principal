@@ -3,6 +3,7 @@ import sqlite3
 import random
 
 from tp_model import driver_database, season_model, team_model, track_database
+from race_model import race_model, participant
 
 class TPModel:
 	def __init__(self):
@@ -168,9 +169,15 @@ class TPModel:
 				return track
 
 	def simulate_race(self):
+		track = self.get_track_from_name(self.season.get_next_track())
+		participants = []
+		for d in self.drivers:
+			car = d.team.car
+			participants.append(participant.Participant(d, car, track))
 
-		self.race_result = [[d.name, d.team.name] for d in self.drivers]
-		random.shuffle(self.race_result)
+		self.race_model = race_model.RaceModel(participants, track)
+		
+		self.race_result = self.race_model.race_result
 		self.season.update_standings(self.race_result)
 		self.update_driver_stats(self.race_result)
 

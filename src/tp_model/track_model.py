@@ -2,7 +2,7 @@
 
 class TrackModel:
 	def __init__(self, name, city, country, length, no_of_laps, track_map, description,
-					downforce, grip, top_speed, braking):
+					downforce, grip, top_speed, braking, base_laptime):
 		self.name = name
 		self.city = city
 		self.country = country
@@ -16,4 +16,4 @@ class TrackModel:
 		self.top_speed = top_speed
 		self.braking = braking
         
-		
+		self.base_laptime = base_laptime
