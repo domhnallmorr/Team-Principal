@@ -14,19 +14,19 @@ class Season:
 			[8, "Race of Australia", "Alexandra Park", "Melbourne", "Australia"], # Wk Number, title, circuit, city, country 
 			[10, "Race of Brasil", "Perus", "Sao Paulo", "Brazil"],
 			[12, "Race of Argentina", "Villa Riachuelo", "Buenos Aires", "Argentina"],
-			[14, "Race of San Marino", "Simona", "Imola", "Italy"],
-			[16, "Race of Spain", "Circuit de Barcelona", "Barcelona", "Spain"],
-			[18, "Race of Monaco", "Monaco Street Track", "Monte Carlo", "Monaco"],
-			[20, "Race of Canada", "Montreal Street Track", "Montreal", "Canada"],
-			[22, "Race of France", "Circuit de France", "Magny Cours", "France"],
-			[24, "Race of UK", "Bronze Rock", "Northampton", "UK"],
-			[26, "Race of Austria", "B2 Ring", "Speilberg", "Austria"],
-			[28, "Race of Germany", "Walldorfring", "walldorf", "Germany"],
-			[30, "Race of Hungary", "Budapestring", "Budapest", "Hungary"],
-			[32, "Race of Belgium", "Ardennesring", "Stavelot", "Belgium"],
-			[34, "Race of Italy", "Lambro", "Monza", "Italy"],
-			[36, "Race of Luxembourg", "Eifelring", "Nurburg", "Germany"],
-			[38, "Race of Japan", "Mie Circuit", "Suzuka", "Japan"],
+			# [14, "Race of San Marino", "Simona", "Imola", "Italy"],
+			# [16, "Race of Spain", "Circuit de Barcelona", "Barcelona", "Spain"],
+			# [18, "Race of Monaco", "Monaco Street Track", "Monte Carlo", "Monaco"],
+			# [20, "Race of Canada", "Montreal Street Track", "Montreal", "Canada"],
+			# [22, "Race of France", "Circuit de France", "Magny Cours", "France"],
+			# [24, "Race of UK", "Bronze Rock", "Northampton", "UK"],
+			# [26, "Race of Austria", "B2 Ring", "Speilberg", "Austria"],
+			# [28, "Race of Germany", "Walldorfring", "walldorf", "Germany"],
+			# [30, "Race of Hungary", "Budapestring", "Budapest", "Hungary"],
+			# [32, "Race of Belgium", "Ardennesring", "Stavelot", "Belgium"],
+			# [34, "Race of Italy", "Lambro", "Monza", "Italy"],
+			# [36, "Race of Luxembourg", "Eifelring", "Nurburg", "Germany"],
+			# [38, "Race of Japan", "Mie Circuit", "Suzuka", "Japan"],
 		]
 
 		self.current_round = 0
@@ -82,9 +82,17 @@ class Season:
 		self.champion = self.driver_standings[0][0]
 		self.model.get_driver_from_name(self.champion).championships += 1
 
-		# Random change in car speed
 		for team in self.model.teams:
-			team.car.update_car_speed()
+			team.car.update_car_speed() # Random change in car speed
+			team.update_drivers_for_new_season()
+
+		# Update all drivers teams
+		for driver in self.model.drivers:
+			driver.team = None
+			for team in self.model.teams:
+				if driver.name in team.drivers:
+					driver.team = team
+
 
 	def setup_new_season(self, update_year=True):
 		self.current_week = 1
@@ -98,8 +106,18 @@ class Season:
 			driver.season_stats_df.loc[self.year] = 0
 			driver.season_stats_df.at[self.year, "Year"] = self.year
 			
+			if update_year is True:
+				driver.increase_age()
 
 		self.setup_initial_standings()
+		self.handle_driver_retirements()
+
+	def handle_driver_retirements(self):
+		free_agents = [d for d in self.model.drivers if d.team is None and d.retired is False and d.retiring is False]
+		retiring_drivers = [d for d in self.model.drivers if d.retiring is True]
+
+		for retiring_driver in retiring_drivers:
+			retiring_driver.team.hire_new_driver(retiring_driver, free_agents)
 
 
 	def get_next_track(self):

@@ -35,6 +35,7 @@ class TPModel:
 		for team in teams:
 			self.teams.append(team_model.Team(self, team[0], team[1], team[2]))
 			self.teams[-1].drivers = [team[3], team[4]]
+			self.teams[-1].drivers_next_year = [team[3], team[4]]
 		self.season.setup_initial_standings()
 
 		for team in self.teams:
@@ -172,8 +173,9 @@ class TPModel:
 		track = self.get_track_from_name(self.season.get_next_track())
 		participants = []
 		for d in self.drivers:
-			car = d.team.car
-			participants.append(participant.Participant(d, car, track))
+			if d.team is not None:
+				car = d.team.car
+				participants.append(participant.Participant(d, car, track))
 
 		self.race_model = race_model.RaceModel(participants, track)
 		

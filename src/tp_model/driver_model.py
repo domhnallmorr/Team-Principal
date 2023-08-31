@@ -20,6 +20,7 @@ class Driver:
 		self.consistency = consistency
 		
 		self.setup_variables()
+		self.decide_when_retiring()
 
 	def setup_variables(self):
 		self.retired = False
@@ -46,25 +47,24 @@ class Driver:
 	def update_position(self, position):
 		self.position = position	
 
-	def decide_if_retiring(self):
-		if self.name not in self.model.season.drivers_hired_for_next_season: # avoid a driver who's just been hired for season deciding to retire
-			if self.age > 40:
-				self.retiring = True
-			elif self.age > 35:
-				if random.random() > 0.5:
-					self.retiring = True
-					
-		if self.retiring is True:
-			logging.info(f"DRIVER RETIREMENT: {self.name}")
-			if self.team is not None:
-				self.team.hire_new_driver(self.name)
-				
-		if self.retiring is False:
-			if self.team is not None:
-				self.team.retain_driver(self.name)
+	def decide_when_retiring(self):
+		self.retiring_age = random.randint(35, 42)
+		if self.retiring_age < self.age:
+			self.retiring_age = self.age
+
 
 	def increase_age(self):
 		self.age += 1
+
+		if self.retiring is True:
+			self.retired = True
+			self.retiring = False
+
+		elif self.retired is False:
+			if self.age == self.retiring_age:
+				self.retiring = True
+				print(f"{self.name} is retiring")
+				
 
 
 if __name__ == "__main__":
