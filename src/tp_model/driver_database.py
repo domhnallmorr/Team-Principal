@@ -42,5 +42,4 @@ def add_drivers(model, year):
 
 		model.drivers.append(driver_model.Driver(model, image_data, nationality,
 					   name, age, hometown, championships, wins, races, podiums,
-					   speed,
-					   								))
+					   speed,))

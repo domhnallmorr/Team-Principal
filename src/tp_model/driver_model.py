@@ -29,23 +29,7 @@ class Driver:
 
 		self.team = None
 
-		self.season_stats_df = pd.DataFrame(columns=["Year", "Races", "Wins", "Podiums"])
-
-	def calculate_laptime(self, track):
-		# Simulate laptime calculation based on driver's speed and track's grip
-		laptime = track.base_laptime / (self.speed * track.grip)
-
-		# Add inconsistency factor with random variation
-		inconsistency_factor = 0.1 * (1 - self.consistency)
-		random_variation = random.uniform(0.0, inconsistency_factor)
-		laptime += laptime * random_variation
-
-		self.race_time += laptime
-
-		return laptime
-
-	def update_position(self, position):
-		self.position = position	
+		self.season_stats_df = pd.DataFrame(columns=["Year", "Races", "Wins", "Podiums", "Points"])
 
 	def decide_when_retiring(self):
 		self.retiring_age = random.randint(35, 42)

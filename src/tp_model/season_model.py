@@ -1,6 +1,7 @@
 import logging
 import random
 
+from tp_model import driver_database
 
 class Season:
 	def __init__(self, model):
@@ -109,6 +110,7 @@ class Season:
 			if update_year is True:
 				driver.increase_age()
 
+		driver_database.add_drivers(self.model, self.year)
 		self.setup_initial_standings()
 		self.handle_driver_retirements()
 
@@ -117,7 +119,8 @@ class Season:
 		retiring_drivers = [d for d in self.model.drivers if d.retiring is True]
 
 		for retiring_driver in retiring_drivers:
-			retiring_driver.team.hire_new_driver(retiring_driver, free_agents)
+			if retiring_driver.team is not None: # currently employed driver
+				retiring_driver.team.hire_new_driver(retiring_driver, free_agents)
 
 
 	def get_next_track(self):

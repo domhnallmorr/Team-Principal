@@ -54,7 +54,7 @@ class TPModel:
 		if self.season.current_round != "off_season":
 			data["date"] = f"Week {self.season.current_week} - Next Race: {self.season.year}\t{self.season.get_next_race_text()}"
 		else:
-			data["date"] = f"Week {self.season.current_week} - Off Season"
+			data["date"] = f"Week {self.season.current_week} - Off Season {self.season.year}"
 		data["in_race_week"] = self.in_race_week
 
 		return data
@@ -97,7 +97,12 @@ class TPModel:
 		data["age"] = driver.age
 		data["nationality"] = driver.nationality
 		data["hometown"] = driver.hometown
-		data["team"] = driver.team.name
+
+		if driver.team is not None:
+			data["team"] = driver.team.name
+		else:
+			data["team"] = "N/A"
+			
 		data["championships"] = driver.championships
 		data["wins"] = driver.wins
 		data["races"] = driver.races
@@ -128,21 +133,26 @@ class TPModel:
 		# self.in_race_week = False
 
 		if self.in_race_week is False:
-			self.advance_one_week()
+			new_seaason = self.advance_one_week()
 
-	
+		return new_seaason	
 	
 	def advance_one_week(self):
+		new_season = False
+
 		self.season.current_week += 1
 
 		if self.season.current_week == 53:
 			self.season.setup_new_season()
+			new_season = True
 		else:
 			if self.season.current_round != "off_season":
 				if self.season.current_week == self.season.calender[self.season.current_round][0]:
 					self.in_race_week = True
 				else:
 					self.in_race_week = False
+
+		return new_season
 
 	def get_driver_from_name(self, name):
 		driver = None
@@ -207,3 +217,6 @@ class TPModel:
 			if idx == 1 or idx == 2: # Podiums
 				driver.podiums += 1
 				driver.season_stats_df.loc[self.season.year, "Podiums"] += 1
+
+			if idx < len(self.season.points_system): # Points
+				driver.season_stats_df.loc[self.season.year, "Points"] += self.season.points_system[idx]

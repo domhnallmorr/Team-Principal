@@ -45,9 +45,12 @@ class TPController:
 		self.view.change_window("circuit")
 
 	def advance(self):
-		self.model.advance()
+		new_season = self.model.advance()
 		self.update_main_window()
 		self.update_standings_window()
+
+		if new_season is True:
+			self.setup_driver_images() # ensure any new drivers images are generated for the view
 
 	def go_to_race(self):
 		self.view.change_window("main_race")

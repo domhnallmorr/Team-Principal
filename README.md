@@ -13,6 +13,8 @@ A summary of current features is provided below;
 - Points (both driver and teams) are updated accordingly
 - Driver statistics are udpated after each race and can be view on the driver page
 - After week 52 a new season is setup
+- Drivers retire
+- New drivers are made available at the start of each season
 
 ## Preview
 
