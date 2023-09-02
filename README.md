@@ -25,4 +25,6 @@ A summary of current features is provided below;
 
 ![Circuit](images/email_page.PNG)
 
+![Circuit](images/calander_page.PNG)
+
 ![Circuit](images/race_weekend_page.PNG)
