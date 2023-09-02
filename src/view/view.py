@@ -2,7 +2,7 @@ import copy
 
 from tkinter import *
 from view import main_window, calender_window, circuit_window, driver_window, main_race_window, standings_window, race_weekend_window, results_window
-from view import tp_icons
+from view import email_window, tp_icons
 from tkinter import font as tkfont
 
 from tksheet import Sheet
@@ -38,6 +38,7 @@ class View:
 		self.calender_window.grid(row=0, column=0, sticky="NSEW")
 		self.current_window = self.calender_window
 
+		self.email_window = email_window.EmailWindow(self.main_window.page_frame, self)
 		self.circuit_window = circuit_window.CircuitWindow(self.main_window.page_frame, self)
 		self.driver_window = driver_window.DriverWindow(self.main_window.page_frame, self)
 		self.standings_window = standings_window.StandingsWindow(self.main_window.page_frame, self)
@@ -61,6 +62,10 @@ class View:
 		elif window == "driver":
 			self.driver_window.grid(row=0, column=0, sticky="NSEW")
 			self.current_window = self.driver_window
+
+		elif window == "email":
+			self.email_window.grid(row=0, column=0, sticky="NSEW")
+			self.current_window = self.email_window
 
 		elif window == "standings":
 			self.standings_window.grid(row=0, column=0, sticky="NSEW")

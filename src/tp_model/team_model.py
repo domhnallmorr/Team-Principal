@@ -51,6 +51,7 @@ class Team:
 		replacement = random.choice(free_agents)
 		idx = self.drivers_next_year.index(current_driver.name)
 		self.drivers_next_year[idx] = replacement.name
+		self.model.inbox.generate_driver_hiring_email(self, replacement)
 
 	def update_drivers_for_new_season(self):
 		self.drivers = copy.deepcopy(self.drivers_next_year)

@@ -39,7 +39,8 @@ class MainWindow(customtkinter.CTkFrame):
 		self.week_label.grid(row=0, column=8, padx=self.view.padx, sticky="NE")
 
 		# SIDEBAR BUTTONS
-		self.email_btn = customtkinter.CTkButton(master=self.sidebar_frame, text="Email")# command=self.start_pause)
+		self.email_btn = customtkinter.CTkButton(master=self.sidebar_frame, text="Email",
+										   command=lambda window="email": self.view.change_window(window))
 		self.email_btn.grid(row=1, column=0, padx=self.view.padx, pady=self.view.pady, sticky="NSEW")
 
 		self.team_btn = customtkinter.CTkButton(master=self.sidebar_frame, text="Team")# command=self.start_pause)

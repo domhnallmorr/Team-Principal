@@ -2,11 +2,12 @@ import os
 import sqlite3
 import random
 
-from tp_model import driver_database, season_model, team_model, track_database
+from tp_model import driver_database, email_model, season_model, team_model, track_database
 from race_model import race_model, participant
 
 class TPModel:
-	def __init__(self):
+	def __init__(self, mode="ui"):
+		self.mode = mode
 		self.setup_variables()
 		self.season = season_model.Season(self)
 
@@ -22,6 +23,8 @@ class TPModel:
 		
 		self.in_race_week = False
 		self.race_result = None
+
+		self.inbox = email_model.Inbox(self)
 
 	def setup_default_drivers(self):
 		driver_database.add_drivers(self, "default")
@@ -48,16 +51,6 @@ class TPModel:
 	def setup_tracks(self):
 		track_database.add_tracks(self)
 
-	def get_main_window_data(self):
-		data = {}
-
-		if self.season.current_round != "off_season":
-			data["date"] = f"Week {self.season.current_week} - Next Race: {self.season.year}\t{self.season.get_next_race_text()}"
-		else:
-			data["date"] = f"Week {self.season.current_week} - Off Season {self.season.year}"
-		data["in_race_week"] = self.in_race_week
-
-		return data
 
 	def get_calender_window_data(self):
 		data = {}
@@ -130,12 +123,14 @@ class TPModel:
 		return data
 
 	def advance(self):
-		# self.in_race_week = False
+		is_new_seaason = False
 
 		if self.in_race_week is False:
-			new_seaason = self.advance_one_week()
+			is_new_seaason = self.advance_one_week()
+		elif self.mode == "headless":
+			self.simulate_race()
 
-		return new_seaason	
+		return is_new_seaason	
 	
 	def advance_one_week(self):
 		new_season = False
@@ -220,3 +215,10 @@ class TPModel:
 
 			if idx < len(self.season.points_system): # Points
 				driver.season_stats_df.loc[self.season.year, "Points"] += self.season.points_system[idx]
+
+			if "dnf" in d[2].lower(): # DNFs
+				driver.season_stats_df.loc[self.season.year, "DNFs"] += 1
+
+
+
+

@@ -3,6 +3,8 @@ import random
 
 import pandas as pd
 
+from tp_model import email_model
+
 class Driver:
 	def __init__(self, model, image_data, nationality, name, age, hometown="",
 	      championships=0, wins=0, races=0, podiums=0, speed=70, consistency=70):
@@ -29,12 +31,12 @@ class Driver:
 
 		self.team = None
 
-		self.season_stats_df = pd.DataFrame(columns=["Year", "Races", "Wins", "Podiums", "Points"])
+		self.season_stats_df = pd.DataFrame(columns=["Year", "Races", "Wins", "Podiums", "Points", "DNFs"])
 
 	def decide_when_retiring(self):
 		self.retiring_age = random.randint(35, 42)
 		if self.retiring_age < self.age:
-			self.retiring_age = self.age
+			self.retiring_age = self.age + 1
 
 
 	def increase_age(self):
@@ -48,8 +50,8 @@ class Driver:
 			if self.age == self.retiring_age:
 				self.retiring = True
 				print(f"{self.name} is retiring")
+				self.model.inbox.generate_driver_retirement_email(self)
 				
-
 
 if __name__ == "__main__":
 	import track_model

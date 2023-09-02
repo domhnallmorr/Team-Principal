@@ -1,4 +1,4 @@
-from tp_model import tp_model
+from tp_model import tp_model, update_window_functions
 from view import view
 
 class TPController:
@@ -19,12 +19,16 @@ class TPController:
 		self.view.setup_driver_images(driver_image_data)
 
 	def update_main_window(self):
-		data = self.model.get_main_window_data()
+		data = update_window_functions.get_main_window_data(self.model)
 		self.view.main_window.update_window(data)
 
 	def update_calender_window(self):
 		data = self.model.get_calender_window_data()
 		self.view.calender_window.update_window(data)
+
+	def update_email_window(self):
+		data = update_window_functions.update_email_window(self.model)
+		self.view.email_window.update_window(data)
 
 	def update_standings_window(self):
 		data = self.model.get_standings_window_data()
@@ -45,11 +49,12 @@ class TPController:
 		self.view.change_window("circuit")
 
 	def advance(self):
-		new_season = self.model.advance()
+		is_new_season = self.model.advance()
 		self.update_main_window()
 		self.update_standings_window()
+		self.update_email_window()
 
-		if new_season is True:
+		if is_new_season is True:
 			self.setup_driver_images() # ensure any new drivers images are generated for the view
 
 	def go_to_race(self):
