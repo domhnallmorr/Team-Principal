@@ -1,3 +1,4 @@
+import copy
 import logging
 import random
 
@@ -15,19 +16,19 @@ class Season:
 			[8, "Race of Australia", "Alexandra Park", "Melbourne", "Australia"], # Wk Number, title, circuit, city, country 
 			[10, "Race of Brasil", "Perus", "Sao Paulo", "Brazil"],
 			[12, "Race of Argentina", "Villa Riachuelo", "Buenos Aires", "Argentina"],
-			# [14, "Race of San Marino", "Simona", "Imola", "Italy"],
-			# [16, "Race of Spain", "Circuit de Barcelona", "Barcelona", "Spain"],
-			# [18, "Race of Monaco", "Monaco Street Track", "Monte Carlo", "Monaco"],
-			# [20, "Race of Canada", "Montreal Street Track", "Montreal", "Canada"],
-			# [22, "Race of France", "Circuit de France", "Magny Cours", "France"],
-			# [24, "Race of UK", "Bronze Rock", "Northampton", "UK"],
-			# [26, "Race of Austria", "B2 Ring", "Speilberg", "Austria"],
-			# [28, "Race of Germany", "Walldorfring", "walldorf", "Germany"],
-			# [30, "Race of Hungary", "Budapestring", "Budapest", "Hungary"],
-			# [32, "Race of Belgium", "Ardennesring", "Stavelot", "Belgium"],
-			# [34, "Race of Italy", "Lambro", "Monza", "Italy"],
-			# [36, "Race of Luxembourg", "Eifelring", "Nurburg", "Germany"],
-			# [38, "Race of Japan", "Mie Circuit", "Suzuka", "Japan"],
+			[14, "Race of San Marino", "Simona", "Imola", "Italy"],
+			[16, "Race of Spain", "Circuit de Barcelona", "Barcelona", "Spain"],
+			[18, "Race of Monaco", "Monaco Street Track", "Monte Carlo", "Monaco"],
+			[20, "Race of Canada", "Montreal Street Track", "Montreal", "Canada"],
+			[22, "Race of France", "Circuit de France", "Magny Cours", "France"],
+			[24, "Race of UK", "Bronze Rock", "Northampton", "UK"],
+			[26, "Race of Austria", "B2 Ring", "Speilberg", "Austria"],
+			[28, "Race of Germany", "Walldorfring", "walldorf", "Germany"],
+			[30, "Race of Hungary", "Budapestring", "Budapest", "Hungary"],
+			[32, "Race of Belgium", "Ardennesring", "Stavelot", "Belgium"],
+			[34, "Race of Italy", "Lambro", "Monza", "Italy"],
+			[36, "Race of Luxembourg", "Eifelring", "Nurburg", "Germany"],
+			[38, "Race of Japan", "Mie Circuit", "Suzuka", "Japan"],
 		]
 
 		self.current_round = 0
@@ -37,6 +38,7 @@ class Season:
 		self.driver_standings = []
 		self.team_standings = []
 		self.drivers_hired_for_next_season = []
+		self.previous_results = {}
 
 	def get_next_race_text(self):
 		if self.current_round >= len(self.calender):
@@ -113,6 +115,9 @@ class Season:
 		driver_database.add_drivers(self.model, self.year)
 		self.setup_initial_standings()
 		self.handle_driver_retirements()
+
+		# Track results
+		self.previous_results[self.year] = copy.deepcopy(self.calender)
 
 	def handle_driver_retirements(self):
 		free_agents = [d for d in self.model.drivers if d.team is None and d.retired is False and d.retiring is False]

@@ -18,11 +18,13 @@ class ResultsWindow(customtkinter.CTkFrame):
 	def setup_widgets(self):
 		customtkinter.CTkLabel(self, text="RESULTS", font=self.view.page_title_font).grid(row=0,
 										     column=0, padx=self.view.padx*3, pady=self.view.pady, sticky="NW")
-		
+
+		self.race_title_label = customtkinter.CTkLabel(self, text="Race of X XXXX", font=self.view.header1_font)
+		self.race_title_label.grid(row=1, column=0, padx=self.view.padx, pady=self.view.pady, sticky="NW")
+
 		self.results_sheet = self.view.setup_tksheet_table(self, headers=["Name", "Team", "Time"])
-		# self.results_sheet = Sheet(self, headers=["Name", "Team", "Time"])
 		self.results_sheet.grid(row=2, column=0, padx=50, pady=self.view.pady, sticky="NSEW")
-		self.results_sheet.change_theme(theme="dark blue", redraw=True)
+
 
 		# self.advance_btn = customtkinter.CTkButton(self, text="Advance", command=self.view.controller.go_to_race)
 		# self.advance_btn.grid(row=3, column=0, padx=self.view.padx, pady=self.view.pady, sticky="NW")
@@ -35,3 +37,5 @@ class ResultsWindow(customtkinter.CTkFrame):
                redraw = True,
                verify = False,
                reset_highlights = False)
+		
+		self.race_title_label.configure(text=data["race_title"])

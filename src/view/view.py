@@ -8,7 +8,7 @@ from tkinter import font as tkfont
 from tksheet import Sheet
 
 class View:
-	def __init__(self, controller):
+	def __init__(self, controller, default_year):
 		self.controller = controller
 
 		self.pady = 5
@@ -26,15 +26,15 @@ class View:
 		self.tksheet_normal_font = ("Verdana", 12, "normal")
 
 		tp_icons.setup_icons(self)
-		self.setup_windows()
+		self.setup_windows(default_year)
 
 		self.track_maps = {}
 
-	def setup_windows(self):
+	def setup_windows(self, default_year):
 		self.main_window = main_window.MainWindow(self.controller.app, self)
 		self.main_window.pack(expand=True, fill=BOTH, side=LEFT)
 
-		self.calender_window = calender_window.CalenderWindow(self.main_window.page_frame, self)
+		self.calender_window = calender_window.CalenderWindow(self.main_window.page_frame, self, default_year)
 		self.calender_window.grid(row=0, column=0, sticky="NSEW")
 		self.current_window = self.calender_window
 

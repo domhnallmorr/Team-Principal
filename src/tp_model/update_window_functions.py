@@ -1,4 +1,4 @@
-
+import copy
 
 def get_main_window_data(model):
 	data = {}
@@ -11,6 +11,23 @@ def get_main_window_data(model):
 
 	return data
 
+def get_calender_window_data(model, year):
+	data = {}
+
+	data["year"] = year
+	data["years"] = [str(y) for y in list(model.season.previous_results.keys())]
+	data["calender"] = copy.deepcopy(model.season.calender)
+
+	# Add winners
+	for idx, race in enumerate(data["calender"]):
+		data["calender"][idx].append("-")
+
+		if len(model.season.previous_results[year][idx]) == 6:
+			race_winner = model.season.previous_results[year][idx][-1][0][0]
+			data["calender"][idx][-1] = race_winner
+
+	return data
+	
 def update_email_window(model):
 	data = {}
 
@@ -20,3 +37,15 @@ def update_email_window(model):
 		data["emails"].append([email.subject, email.message])
 
 	return data
+
+def get_previous_result(model, year, race_idx):
+		data = {}
+		if len(model.season.previous_results[year][race_idx]) == 5:
+			result = None # race has not been run yet
+		else:
+			result = model.season.previous_results[year][race_idx][-1]
+		data["results"] = result
+  
+		data["race_title"] = f"{model.season.previous_results[year][race_idx][1]} - {year}"
+
+		return data

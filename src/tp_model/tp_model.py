@@ -50,25 +50,11 @@ class TPModel:
 
 	def setup_tracks(self):
 		track_database.add_tracks(self)
-
-
-	def get_calender_window_data(self):
-		data = {}
-
-		data["calender"] = self.season.calender
-  
-		return data
 		
 	def get_standings_window_data(self):
 		data = {}
 		data["driver_standings"] = self.season.driver_standings
 		data["team_standings"] = self.season.team_standings
-  
-		return data
-
-	def get_results_window_data(self):
-		data = {}
-		data["results"] = self.race_result
   
 		return data
 	
@@ -189,6 +175,9 @@ class TPModel:
 		self.update_driver_stats(self.race_result)
 
 		self.in_race_week = False
+
+		# Track results
+		self.season.previous_results[self.season.year][self.season.current_round].append(self.race_result)
 		self.season.current_round += 1
 
 		if self.season.current_round == len(self.season.calender):

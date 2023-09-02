@@ -6,12 +6,12 @@ class TPController:
 		self.app = app
 
 		self.model = tp_model.TPModel()
-		self.view = view.View(self)
+		self.view = view.View(self, self.model.season.year)
 		self.view.setup_track_maps(self.model.tracks)
 		self.setup_driver_images()
 
 		self.update_main_window()
-		self.update_calender_window()
+		self.update_calender_window(self.model.season.year)
 		self.update_standings_window()
 
 	def setup_driver_images(self):
@@ -22,8 +22,8 @@ class TPController:
 		data = update_window_functions.get_main_window_data(self.model)
 		self.view.main_window.update_window(data)
 
-	def update_calender_window(self):
-		data = self.model.get_calender_window_data()
+	def update_calender_window(self, year):
+		data = update_window_functions.get_calender_window_data(self.model, year)
 		self.view.calender_window.update_window(data)
 
 	def update_email_window(self):
@@ -53,6 +53,7 @@ class TPController:
 		self.update_main_window()
 		self.update_standings_window()
 		self.update_email_window()
+		self.update_calender_window(self.model.season.year)
 
 		if is_new_season is True:
 			self.setup_driver_images() # ensure any new drivers images are generated for the view
@@ -63,13 +64,24 @@ class TPController:
 		self.model.simulate_race()
 		
 		self.view.change_window("main")
-		self.view.change_window("results")
 
-		data = self.model.get_results_window_data()
-		self.view.results_window.update_window(data)
+		if self.model.season.current_round == "off_season":
+			race_idx = -1
+		else:
+			race_idx = self.model.season.current_round - 1
+
+		self.show_race_result(self.model.season.year, race_idx)
 
 		self.update_standings_window()
 		self.update_main_window()
+		self.update_calender_window(self.model.season.year)
 		
 		self.view.main_window.update_advance_btn("advance")
+
+
+	def show_race_result(self, year, race_idx):
+		data = update_window_functions.get_previous_result(self.model, year, race_idx)
+		if data["results"] is not None:
+			self.view.results_window.update_window(data)
+			self.view.change_window("results")
 
