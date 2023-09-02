@@ -15,11 +15,14 @@ A summary of current features is provided below;
 - After week 52 a new season is setup
 - Drivers retire
 - New drivers are made available at the start of each season
+- Very basic email system
 
 ## Preview
 
 ![Circuit](images/circuit_page.PNG)
 
 ![Circuit](images/driver_page.PNG)
+
+![Circuit](images/email_page.PNG)
 
 ![Circuit](images/race_weekend_page.PNG)
