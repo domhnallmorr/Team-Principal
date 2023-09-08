@@ -44,6 +44,8 @@ class StandingsWindow(customtkinter.CTkFrame):
 		self.team_standings_sheet.grid(row=2, column=1, padx=self.view.padx*5, pady=self.view.pady, sticky="NSEW")
 
 		self.team_standings_sheet.column_width(column=1, width=90)
+		self.team_standings_sheet.enable_bindings("single_select")
+		self.team_standings_sheet.bind("<ButtonPress-1>", self.click_team_standing)
 
 	def update_window(self, data):
 
@@ -71,3 +73,14 @@ class StandingsWindow(customtkinter.CTkFrame):
 				driver = self.driver_standings_sheet.get_cell_data(row, column)
 				self.view.controller.show_driver_window(driver)
 				self.driver_standings_sheet.deselect(row=row, column=column, redraw=True)
+
+	def click_team_standing(self, event):
+		currently_selected = self.team_standings_sheet.get_currently_selected()
+		if currently_selected:
+			row = currently_selected.row
+			column = currently_selected.column
+
+			if column == 0:
+				team = self.team_standings_sheet.get_cell_data(row, column)
+				self.view.controller.show_team_window(team)
+				self.team_standings_sheet.deselect(row=row, column=column, redraw=True)		

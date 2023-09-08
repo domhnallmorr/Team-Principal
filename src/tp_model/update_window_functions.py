@@ -27,7 +27,52 @@ def get_calender_window_data(model, year):
 			data["calender"][idx][-1] = race_winner
 
 	return data
-	
+
+def get_driver_window_data(model, driver):
+	data = {}
+
+	data["name"] = driver
+	driver = model.get_driver_from_name(driver)
+	data["age"] = driver.age
+	data["nationality"] = driver.nationality
+	data["hometown"] = driver.hometown
+
+	if driver.team is not None:
+		data["team"] = driver.team.name
+	else:
+		data["team"] = "N/A"
+		
+	data["championships"] = driver.championships
+	data["wins"] = driver.wins
+	data["races"] = driver.races
+	data["podiums"] = driver.podiums
+	data["seasons_data"] = driver.season_stats_df.values.tolist()
+
+	return data
+
+def get_team_window_data(model, team):
+	data = {}
+
+	data["name"] = team
+	team = model.get_team_from_name(team)
+	data["nationality"] = team.nationality
+	data["headquarters"] = team.headquarters
+	data["tp"] = team.team_principal.name
+	data["wind_tunnel"] = team.wind_tunnel
+	data["super_computer"] = team.super_computer
+	data["engine_factory"] = team.engine_factory
+	data["chassis_workshop"] = team.chassis_workshop
+	data["brake_center"] = team.brake_center
+	data["workforce"] = team.workforce
+	data["driver_1"] = team.drivers[0]
+	data["driver_2"] = team.drivers[1]
+
+	data["drivers_championships"] = team.drivers_championships
+	data["constructors_championships"] = team.constructors_championships
+	data["wins"] = team.wins
+
+	return data
+
 def update_email_window(model):
 	data = {}
 

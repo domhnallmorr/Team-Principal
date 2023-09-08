@@ -1,10 +1,12 @@
 import copy
 
+from tkinter import ttk
 from tkinter import *
 from view import main_window, calender_window, circuit_window, driver_window, main_race_window, standings_window, race_weekend_window, results_window
-from view import email_window, tp_icons
+from view import email_window, team_window, tp_icons
 from tkinter import font as tkfont
 
+import customtkinter
 from tksheet import Sheet
 
 class View:
@@ -25,6 +27,18 @@ class View:
 
 		self.tksheet_normal_font = ("Verdana", 12, "normal")
 
+		root = self.controller.app
+		bg_color = root._apply_appearance_mode(customtkinter.ThemeManager.theme["CTkFrame"]["fg_color"])
+		text_color = root._apply_appearance_mode(customtkinter.ThemeManager.theme["CTkLabel"]["text_color"])
+		selected_color = root._apply_appearance_mode(customtkinter.ThemeManager.theme["CTkButton"]["fg_color"])
+
+		treestyle = ttk.Style()
+		treestyle.theme_use("default")
+		treestyle.configure("Treeview", background=bg_color, foreground=text_color, fieldbackground=bg_color, borderwidth=0,
+					  font=("Verdana", 12, ), rowheight=28)
+		treestyle.map('Treeview', background=[('selected', bg_color)], foreground=[('selected', selected_color)])
+
+
 		tp_icons.setup_icons(self)
 		self.setup_windows(default_year)
 
@@ -44,6 +58,7 @@ class View:
 		self.standings_window = standings_window.StandingsWindow(self.main_window.page_frame, self)
 		self.race_weekend_window = race_weekend_window.RaceWeekendWindow(self.main_window.page_frame, self)
 		self.results_window = results_window.ResultsWindow(self.main_window.page_frame, self)
+		self.team_window = team_window.TeamWindow(self.main_window.page_frame, self)
 		
 		self.main_race_window = main_race_window.MainRaceWindow(self.controller.app, self)
 		
@@ -70,6 +85,10 @@ class View:
 		elif window == "standings":
 			self.standings_window.grid(row=0, column=0, sticky="NSEW")
 			self.current_window = self.standings_window
+
+		elif window == "team":
+			self.team_window.grid(row=0, column=0, sticky="NSEW")
+			self.current_window = self.team_window
 
 		elif window == "race_weekend":
 			self.controller.update_race_weekend_window()

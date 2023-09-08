@@ -2,7 +2,7 @@ import os
 import sqlite3
 import random
 
-from tp_model import driver_database, email_model, season_model, team_model, track_database
+from tp_model import driver_database, email_model, season_model, team_model, track_database, team_database
 from race_model import race_model, participant
 
 class TPModel:
@@ -12,14 +12,19 @@ class TPModel:
 		self.season = season_model.Season(self)
 
 		self.setup_default_drivers()
-		self.setup_default_teams()
+		team_database.add_staff(self, "default")
+		team_database.add_teams(self)
+
 		self.setup_tracks()
 		self.season.setup_new_season(update_year=False)
+
+		self.player_team = self.get_team_from_name("Moretti")
 
 	def setup_variables(self):
 		self.drivers = []
 		self.teams = []
 		self.tracks = []
+		self.team_principals = []
 		
 		self.in_race_week = False
 		self.race_result = None
@@ -29,24 +34,24 @@ class TPModel:
 	def setup_default_drivers(self):
 		driver_database.add_drivers(self, "default")
 
-	def setup_default_teams(self):
-		conn = sqlite3.connect(f"{os.getcwd()}\\tp_model\\team_principal.db")
-		cursor = conn.cursor()
-		cursor.execute("SELECT * FROM teams")
-		teams = cursor.fetchall()
+	# def setup_default_teams(self):
+	# 	conn = sqlite3.connect(f"{os.getcwd()}\\tp_model\\team_principal.db")
+	# 	cursor = conn.cursor()
+	# 	cursor.execute("SELECT * FROM teams")
+	# 	teams = cursor.fetchall()
 
-		for team in teams:
-			self.teams.append(team_model.Team(self, team[0], team[1], team[2]))
-			self.teams[-1].drivers = [team[3], team[4]]
-			self.teams[-1].drivers_next_year = [team[3], team[4]]
-		self.season.setup_initial_standings()
+	# 	for team in teams:
+	# 		self.teams.append(team_model.Team(self, team[0], team[1], team[2]))
+	# 		self.teams[-1].drivers = [team[3], team[4]]
+	# 		self.teams[-1].drivers_next_year = [team[3], team[4]]
+	# 	self.season.setup_initial_standings()
 
-		for team in self.teams:
-			team.set_drivers_team()
-			team.drivers_next_year = team.drivers
+	# 	for team in self.teams:
+	# 		team.set_drivers_team()
+	# 		team.drivers_next_year = team.drivers
 
-		# SETUP PRIZE MONEY
-		self.teams[-1].prize_money = 7_000_000
+	# 	# SETUP PRIZE MONEY
+	# 	self.teams[-1].prize_money = 7_000_000
 
 	def setup_tracks(self):
 		track_database.add_tracks(self)
@@ -68,27 +73,6 @@ class TPModel:
 
 		return data
 
-	def get_driver_window_data(self, driver):
-		data = {}
-
-		data["name"] = driver
-		driver = self.get_driver_from_name(driver)
-		data["age"] = driver.age
-		data["nationality"] = driver.nationality
-		data["hometown"] = driver.hometown
-
-		if driver.team is not None:
-			data["team"] = driver.team.name
-		else:
-			data["team"] = "N/A"
-			
-		data["championships"] = driver.championships
-		data["wins"] = driver.wins
-		data["races"] = driver.races
-		data["podiums"] = driver.podiums
-		data["seasons_data"] = driver.season_stats_df.values.tolist()
-
-		return data
 
 	def get_circuit_window_data(self, track):
 		data = {}
@@ -153,6 +137,14 @@ class TPModel:
 				break
 		return team
 
+	def get_team_principal_from_name(self, name): # get the team principal instance object from his name
+		tp = None
+		for person in self.team_principals:
+			if person.name == name:
+				tp = person
+				break
+		return tp
+	
 	def get_track_from_name(self, name):
 		track = None
 

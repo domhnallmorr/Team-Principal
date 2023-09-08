@@ -96,6 +96,9 @@ class Season:
 				if driver.name in team.drivers:
 					driver.team = team
 
+		# Update Teams
+		for team in self.model.teams:
+			team.end_season()
 
 	def setup_new_season(self, update_year=True):
 		self.current_week = 1
@@ -125,8 +128,8 @@ class Season:
 
 		for retiring_driver in retiring_drivers:
 			if retiring_driver.team is not None: # currently employed driver
-				retiring_driver.team.hire_new_driver(retiring_driver, free_agents)
-
+				replacement = retiring_driver.team.hire_new_driver(retiring_driver, free_agents)
+				free_agents.remove(replacement)
 
 	def get_next_track(self):
 		return self.calender[self.current_round][2]

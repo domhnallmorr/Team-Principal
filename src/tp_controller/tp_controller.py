@@ -39,9 +39,14 @@ class TPController:
 		self.view.race_weekend_window.update_window(data)
 
 	def show_driver_window(self, driver):
-		data = self.model.get_driver_window_data(driver)
+		data = update_window_functions.get_driver_window_data(self.model, driver)
 		self.view.driver_window.update_window(data)
 		self.view.change_window("driver")
+
+	def show_team_window(self, team):
+		data = update_window_functions.get_team_window_data(self.model, team)
+		self.view.team_window.update_window(data)
+		self.view.change_window("team")
 
 	def show_circuit_window(self, track):
 		data = self.model.get_circuit_window_data(track)
@@ -85,3 +90,5 @@ class TPController:
 			self.view.results_window.update_window(data)
 			self.view.change_window("results")
 
+	def show_player_team_page(self):
+		self.show_team_window(self.model.player_team.name)

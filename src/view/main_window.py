@@ -43,7 +43,7 @@ class MainWindow(customtkinter.CTkFrame):
 										   command=lambda window="email": self.view.change_window(window))
 		self.email_btn.grid(row=1, column=0, padx=self.view.padx, pady=self.view.pady, sticky="NSEW")
 
-		self.team_btn = customtkinter.CTkButton(master=self.sidebar_frame, text="Team")# command=self.start_pause)
+		self.team_btn = customtkinter.CTkButton(master=self.sidebar_frame, text="Team", command=self.view.controller.show_player_team_page)
 		self.team_btn.grid(row=2, column=0, padx=self.view.padx, pady=self.view.pady, sticky="NSEW")
 
 		self.standings_btn = customtkinter.CTkButton(master=self.sidebar_frame, text="Standings",
