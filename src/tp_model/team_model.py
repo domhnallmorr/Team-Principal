@@ -5,7 +5,7 @@ from tp_model import car_model
 
 class Team:
 	def __init__(self, model, name, car_speed, car_failure_probability, nationality, headquarters, tp,
-			  drivers_championships, constructors_championships, wins,
+			  technical_director, drivers_championships, constructors_championships, wins,
 			  wind_tunnel, super_computer, engine_factory, chassis_workshop, brake_center,
 			  workforce):
 		self.model = model
@@ -14,6 +14,9 @@ class Team:
 		self.nationality = nationality
 		self.headquarters = headquarters
 		self.team_principal = tp
+		self.technical_director = technical_director
+		
+		# FACILITIES
 		self.wind_tunnel = wind_tunnel
 		self.super_computer = super_computer
 		self.engine_factory = engine_factory
@@ -65,7 +68,7 @@ class Team:
 
 	def set_drivers_team(self):
 		for driver in self.drivers:
-			driver = self.model.get_driver_from_name(driver)
+			driver = self.model.get_instance_by_name(driver, "Driver")
 			driver.team = self
 
 	def hire_new_driver(self, current_driver, free_agents):

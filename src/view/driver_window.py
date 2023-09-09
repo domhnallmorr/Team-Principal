@@ -76,7 +76,7 @@ class DriverWindow(customtkinter.CTkFrame):
 		self.podiums_label.grid(row=2, column=3, padx=self.view.padx, pady=self.view.pady, sticky="NW") 
 
 		# Seasons Frame
-		self.seasons_sheet = self.view.setup_tksheet_table(self.seasons_frame, ["Year", "Races", "Wins", "Podiums", "Points", "DNFs"])
+		self.seasons_sheet = self.view.setup_tksheet_table(self.seasons_frame, ["Year", "Races", "Wins", "Podiums", "Points", "DNFs", "Pos."])
 		self.seasons_sheet.grid(row=1, column=0, columnspan=2, padx=self.view.padx, pady=self.view.pady, sticky="NSEW") 
 		self.seasons_sheet.set_options(auto_resize_columns=50)
 

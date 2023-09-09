@@ -28,11 +28,29 @@ def get_calender_window_data(model, year):
 
 	return data
 
+def get_circuit_window_data(model, track):
+	data = {}
+
+	data["name"] = track
+	track = model.get_instance_by_name(track, "Track")
+	data["description"] = track.description
+	data["city"] = track.city
+	data["country"] = track.country
+	data["length"] = round(track.length/1000, 3)
+	data["laps"] = track.no_of_laps
+
+	data["downforce"] = track.downforce
+	data["grip"] = track.grip
+	data["top_speed"] = track.top_speed
+	data["braking"] = track.braking
+	
+	return data
+
 def get_driver_window_data(model, driver):
 	data = {}
 
 	data["name"] = driver
-	driver = model.get_driver_from_name(driver)
+	driver = model.get_instance_by_name(driver, "Driver")
 	data["age"] = driver.age
 	data["nationality"] = driver.nationality
 	data["hometown"] = driver.hometown
@@ -54,10 +72,11 @@ def get_team_window_data(model, team):
 	data = {}
 
 	data["name"] = team
-	team = model.get_team_from_name(team)
+	team = model.get_instance_by_name(team, "Team")
 	data["nationality"] = team.nationality
 	data["headquarters"] = team.headquarters
 	data["tp"] = team.team_principal.name
+	data["technical_director"] = team.technical_director.name
 	data["wind_tunnel"] = team.wind_tunnel
 	data["super_computer"] = team.super_computer
 	data["engine_factory"] = team.engine_factory
@@ -94,3 +113,10 @@ def get_previous_result(model, year, race_idx):
 		data["race_title"] = f"{model.season.previous_results[year][race_idx][1]} - {year}"
 
 		return data
+
+def get_standings_window_data(model):
+	data = {}
+	data["driver_standings"] = model.season.driver_standings
+	data["team_standings"] = model.season.team_standings
+
+	return data

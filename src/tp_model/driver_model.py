@@ -31,7 +31,7 @@ class Driver:
 
 		self.team = None
 
-		self.season_stats_df = pd.DataFrame(columns=["Year", "Races", "Wins", "Podiums", "Points", "DNFs"])
+		self.season_stats_df = pd.DataFrame(columns=["Year", "Races", "Wins", "Podiums", "Points", "DNFs", "Pos"])
 
 	def decide_when_retiring(self):
 		self.retiring_age = random.randint(35, 42)

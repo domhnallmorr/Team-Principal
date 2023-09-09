@@ -70,7 +70,7 @@ class CircuitWindow(customtkinter.CTkFrame):
 		self.braking_progressbar.grid(row=4, column=2, padx=self.view.padx, pady=self.view.pady, sticky="NSEW")
 
 	def update_window(self, data):
-		self.title_label.configure(text=f'Circuit: {data["name"]}')
+		self.title_label.configure(text=f'{data["name"]}')
 
 		self.track_image = customtkinter.CTkImage(light_image=self.view.track_maps[data["name"]], size=(768, 383))
 		self.track_map_image_label.configure(image=self.track_image)

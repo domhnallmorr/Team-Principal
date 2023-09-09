@@ -31,7 +31,7 @@ class TPController:
 		self.view.email_window.update_window(data)
 
 	def update_standings_window(self):
-		data = self.model.get_standings_window_data()
+		data = update_window_functions.get_standings_window_data(self.model)
 		self.view.standings_window.update_window(data)
 
 	def update_race_weekend_window(self):
@@ -49,7 +49,7 @@ class TPController:
 		self.view.change_window("team")
 
 	def show_circuit_window(self, track):
-		data = self.model.get_circuit_window_data(track)
+		data = update_window_functions.get_circuit_window_data(self.model, track)
 		self.view.circuit_window.update_window(data)
 		self.view.change_window("circuit")
 

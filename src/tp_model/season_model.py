@@ -67,7 +67,7 @@ class Season:
 
 					# ADD POINTS TO TEAM
 					for team in self.team_standings:
-						if driver_name in self.model.get_team_from_name(team[0]).drivers:
+						if driver_name in self.model.get_instance_by_name(team[0], "Team").drivers:
 							team[1] += points
 							break
 
@@ -82,9 +82,18 @@ class Season:
 
 	def end_season(self):
 		self.current_round = "off_season"
-		self.champion = self.driver_standings[0][0]
-		self.model.get_driver_from_name(self.champion).championships += 1
 
+		# UPDATE STATS
+		self.champion = self.driver_standings[0][0]
+		driver = self.model.get_instance_by_name(self.champion, "Driver")
+		driver.championships += 1
+		driver.team.drivers_championships += 1
+
+		self.constructors_champion = self.team_standings[0][0]
+		team = self.model.get_instance_by_name(self.constructors_champion, "Team")
+		team.constructors_championships += 1
+
+		# UPDATE CARS
 		for team in self.model.teams:
 			team.car.update_car_speed() # Random change in car speed
 			team.update_drivers_for_new_season()

@@ -1,6 +1,6 @@
 import os
 import sqlite3
-from tp_model import team_model, team_principal_staff_model
+from tp_model import team_model, team_principal_staff_model, technical_director_model
 
 def add_teams(model):
 
@@ -21,6 +21,7 @@ def add_teams(model):
 	driver_2_idx = column_names.index("driver_2")
 	hq_idx = column_names.index("Headquarters")
 	tp_idx = column_names.index("TP")
+	technical_director_idx = column_names.index("Technical_Director")
 	workforce_idx = column_names.index("Workforce")
 
 	# FACILITIES
@@ -45,7 +46,9 @@ def add_teams(model):
 		nationality = team[nation_idx]
 		car_failure_probability = team[failure_idx]
 		hq = team[hq_idx]
-		tp = model.get_team_principal_from_name(team[tp_idx])
+		tp = model.get_instance_by_name(team[tp_idx], "TeamPrincipal")
+		technical_director = model.get_instance_by_name(team[technical_director_idx], "TechnicalDirector")
+
 		wind_tunnel = team[windtunnel_idx]
 		super_computer = team[super_computer_idx]
 		engine_factory = team[engine_factory_idx]
@@ -59,7 +62,7 @@ def add_teams(model):
 		wins = team[wins_idx]
 
 		model.teams.append(team_model.Team(model, name, speed, car_failure_probability, nationality, hq, tp,
-									 drivers_championships, constructors_championships, wins,
+									 technical_director, drivers_championships, constructors_championships, wins,
 									wind_tunnel, super_computer, engine_factory, chassis_workshop, brake_center,
 									workforce))
 
@@ -71,12 +74,12 @@ def add_teams(model):
 			team.set_drivers_team()
 			team.drivers_next_year = team.drivers
 
-def add_staff(model, year):
+def add_team_principals(model, year):
 
 	conn = sqlite3.connect(f"{os.getcwd()}\\tp_model\\team_principal.db")
 
 	# GET COLUMN NAMES
-	table_name = "staff"
+	table_name = "team_principals"
 	cursor = conn.execute(f'PRAGMA table_info({table_name})')
 	columns = cursor.fetchall()
 	column_names = [column[1] for column in columns]
@@ -86,7 +89,7 @@ def add_staff(model, year):
 	role_idx = column_names.index("Role")
 
 	cursor = conn.cursor()
-	cursor.execute(f"SELECT * FROM staff WHERE Year_Appear = '{str(year)}'")
+	cursor.execute(f"SELECT * FROM team_principals WHERE Year_Appear = '{str(year)}'")
 	staff = cursor.fetchall()
 
 	for person in staff:
@@ -95,3 +98,27 @@ def add_staff(model, year):
 
 		if role == "TP":
 			model.team_principals.append(team_principal_staff_model.TeamPrincipalStaff(name))
+
+def add_technical_directors(model, year):
+
+	conn = sqlite3.connect(f"{os.getcwd()}\\tp_model\\team_principal.db")
+
+	# GET COLUMN NAMES
+	table_name = "technical_directors"
+	cursor = conn.execute(f'PRAGMA table_info({table_name})')
+	columns = cursor.fetchall()
+	column_names = [column[1] for column in columns]
+
+	# GET COLUMN INDECES
+	name_idx = column_names.index("Name")
+	age_idx = column_names.index("Age")
+
+	cursor = conn.cursor()
+	cursor.execute(f"SELECT * FROM technical_directors WHERE Year_Appear = '{str(year)}'")
+	staff = cursor.fetchall()
+
+	for person in staff:
+		name = person[name_idx]
+		age = person[age_idx]
+
+		model.technical_directors.append(technical_director_model.TechnicalDirector(name, age))

@@ -51,8 +51,11 @@ class TeamWindow(customtkinter.CTkFrame):
 		self.tp_label = customtkinter.CTkLabel(self.main_frame, text="Team Principal: Someone", font=self.view.normal_font)
 		self.tp_label.grid(row=4, column=2, padx=self.view.padx, pady=self.view.pady, sticky="NW")
 
+		self.td_label = customtkinter.CTkLabel(self.main_frame, text="Technical Director: Someone", font=self.view.normal_font)
+		self.td_label.grid(row=5, column=2, padx=self.view.padx, pady=self.view.pady, sticky="NW")
+
 		self.workforce_label = customtkinter.CTkLabel(self.main_frame, text="Workforce: 500", font=self.view.normal_font)
-		self.workforce_label.grid(row=5, column=2, padx=self.view.padx, pady=self.view.pady, sticky="NW")
+		self.workforce_label.grid(row=6, column=2, padx=self.view.padx, pady=self.view.pady, sticky="NW")
 
 		# DRIVER FRAME
 		customtkinter.CTkLabel(self.driver_frame, text="Drivers", font=self.view.header1_font).grid(row=0,
@@ -110,6 +113,7 @@ class TeamWindow(customtkinter.CTkFrame):
 		self.nationality_label.configure(text=f'Nationality: {data["nationality"]}')
 		self.hq_label.configure(text=f'Headquarters: {data["headquarters"]}')
 		self.tp_label.configure(text=f'Team Principal: {data["tp"]}')
+		self.td_label.configure(text=f'Technical Director: {data["technical_director"]}')
 		self.workforce_label.configure(text=f'Workforce: {data["workforce"]}')
 
 		# Drivers
