@@ -112,6 +112,8 @@ def add_technical_directors(model, year):
 	# GET COLUMN INDECES
 	name_idx = column_names.index("Name")
 	age_idx = column_names.index("Age")
+	technical_knowledge_idx = column_names.index("Technical_Knowledge")
+	resource_management_idx = column_names.index("Resource_Management")
 
 	cursor = conn.cursor()
 	cursor.execute(f"SELECT * FROM technical_directors WHERE Year_Appear = '{str(year)}'")
@@ -120,5 +122,7 @@ def add_technical_directors(model, year):
 	for person in staff:
 		name = person[name_idx]
 		age = person[age_idx]
+		technical_knowledge = person[technical_knowledge_idx]
+		resource_management = person[resource_management_idx]
 
-		model.technical_directors.append(technical_director_model.TechnicalDirector(name, age))
+		model.technical_directors.append(technical_director_model.TechnicalDirector(name, age, technical_knowledge, resource_management))

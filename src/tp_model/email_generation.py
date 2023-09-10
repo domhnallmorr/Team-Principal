@@ -1,6 +1,9 @@
 
 import random
 
+def return_random_message(messages):
+      return random.choice(messages)
+
 def driver_retirement(driver):
 	retirement_messages = [
 	f"{driver.name} has announced his retirement from racing at the age of {driver.age}.",
@@ -26,3 +29,13 @@ def driver_hiring_email(team, driver):
     selected_message = random.choice(hiring_messages)
     
     return selected_message
+
+def upgrade_facility(team, facility):
+	messages = [
+		f"Exciting news! {team.name} has completed an upgrade to their {facility}.",
+		f"{team.name} is investing in excellence with the latest upgrade to their {facility}.",
+		f"Attention all fans! {team.name} has improved their {facility} to enhance performance.",
+		f"Breaking news: {team.name} unveils an upgraded {facility} to stay at the forefront of F1 technology.",  
+		]
+    
+	return return_random_message(messages)

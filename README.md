@@ -1,6 +1,10 @@
 # Team Principal
 
-An attempt to build an motorsport manager style game with python. There is no gameplay at the moment. Currently working on building screens for the UI (previews below) and fleshing out the database. The UI is built using custom tkinter.
+An attempt to build an motorsport manager style game with python. There is no gameplay at the moment.
+
+There is some basic functionality for generating/tracking results and car speeds are updated at the start of each new season.
+
+The UI is built using custom tkinter.
 
 Will add more detail to this readme later.
 
@@ -16,6 +20,7 @@ A summary of current features is provided below;
 - Drivers retire
 - New drivers are made available at the start of each season
 - Very basic email system
+- Teams update facilities
 
 ## Preview
 

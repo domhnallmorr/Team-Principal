@@ -25,3 +25,9 @@ class Inbox:
 
 		email = Email(f"{team.name} have hired {driver.name}!", msg)
 		self.emails.append(email)
+
+	def generate_facility_update_email(self, team, facility):
+		msg = email_generation.upgrade_facility(team, facility)
+
+		email = Email(f"{team.name} have upgraded their {facility}!", msg)
+		self.emails.append(email)

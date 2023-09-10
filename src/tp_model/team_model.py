@@ -40,6 +40,7 @@ class Team:
 
 		# Facilities
 		self.wind_tunnel_last_upgrade_year = None # when the tunnel was last upgraded
+		self.wind_tunnel_tracker = [self.wind_tunnel]
 
 		# FINANCIAL STUFF
 		self.budget = 25_000_000
@@ -90,18 +91,55 @@ class Team:
 		if self.wind_tunnel < 1:
 			self.wind_tunnel = 1
 
+		facilities = ["windtunnel", "super computer", "engine factory", "chassis workshop", "brake center"]
+		facility_variables = [self.wind_tunnel, self.super_computer, self.engine_factory, self.chassis_workshop, self.brake_center]
+
 		# Determine if team upgrades facilities
-		# for facility in [self.wind_tunnel]:
-		# 	if facility < 60:
+		for idx, facility in enumerate(facility_variables):
+			if facility < 60:
+				should_upgrade = self.should_upgrade(facility)
+				if should_upgrade is True:
+					if idx == 0:
+						self.wind_tunnel += random.randint(20, 40)
+						if self.wind_tunnel > 100:
+							self.wind_tunnel = 100
+
+					elif idx == 1:
+						self.super_computer += random.randint(20, 40)
+						if self.super_computer > 100:
+							self.super_computer = 100
+
+					elif idx == 2:
+						self.engine_factory += random.randint(20, 40)
+						if self.engine_factory > 100:
+							self.engine_factory = 100
+
+					elif idx == 3:
+						self.chassis_workshop += random.randint(20, 40)
+						if self.chassis_workshop > 100:
+							self.chassis_workshop = 100
+
+					elif idx == 4:
+						self.brake_center += random.randint(20, 40)
+						if self.brake_center > 100:
+							self.brake_center = 100
+
+					self.model.inbox.generate_facility_update_email(self, facilities[idx])
 	
-	def should_upgrade(self, current_value, last_upgrade_year):
+		self.wind_tunnel_tracker.append(self.wind_tunnel)
+
+	def should_upgrade(self, current_value):
 		should_upgrade = False
 
-		# Generate a random number between 0 and 1
-		random_value = random.random()
-        # Set a threshold for the upgrade decision (adjust as needed)
-		upgrade_threshold = 0.3  # Example: 30% chance of upgrading
-        # Compare the random number to the threshold
-    	# return random_value < upgrade_threshold
+		if current_value < 10:
+			should_upgrade = True
+		else:
+			# Generate a random number between 0 and 1
+			random_value = random.random()
+
+			upgrade_threshold = 0.2  # Example: 30% chance of upgrading
+
+			if random_value < upgrade_threshold:
+				should_upgrade = True
 
 		return should_upgrade

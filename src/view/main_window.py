@@ -32,7 +32,7 @@ class MainWindow(customtkinter.CTkFrame):
 		self.page_frame.grid(row=1, column=1, padx=self.view.padx, sticky="NSEW")
 
 		# HEADER LABELS
-		self.header_label = customtkinter.CTkLabel(self.header_frame, text="Moretti $1,000,000", font=self.view.normal_font)
+		self.header_label = customtkinter.CTkLabel(self.header_frame, text="Moretti $5,762,308", font=self.view.normal_font)
 		self.header_label.grid(row=0, column=0, padx=self.view.padx, sticky="NW")
 
 		self.week_label = customtkinter.CTkLabel(self.header_frame, text="Week 1 1998", font=self.view.normal_font)
