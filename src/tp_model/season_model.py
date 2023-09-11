@@ -2,7 +2,7 @@ import copy
 import logging
 import random
 
-from tp_model import driver_database
+from tp_model import checking_functions, driver_database, team_database
 
 class Season:
 	def __init__(self, model):
@@ -130,6 +130,24 @@ class Season:
 
 		# Track results
 		self.previous_results[self.year] = copy.deepcopy(self.calender)
+
+		# Handle Technical_directors switching teams
+		team_database.add_technical_directors(self.model, self.year)
+
+		if update_year is True:
+			for td in self.model.technical_directors:
+				td.decide_switch_teams()
+
+			for team in self.model.teams:
+				team.hire_technical_director()
+
+			# Ensure all teams have a TD
+			for idx in [0, 1, 2]: # this is very crude, need to figure why it's neeeded
+				for team in self.model.teams:
+					if team.technical_director is None:
+						team.hire_technical_director(force_hire=True)
+
+			checking_functions.technical_director_switch_teams_checks(self.model)
 
 	def handle_driver_retirements(self):
 		free_agents = [d for d in self.model.drivers if d.team is None and d.retired is False and d.retiring is False]

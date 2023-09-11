@@ -15,6 +15,7 @@ class Team:
 		self.headquarters = headquarters
 		self.team_principal = tp
 		self.technical_director = technical_director
+		self.technical_director.team = self
 		
 		# FACILITIES
 		self.wind_tunnel = wind_tunnel
@@ -143,3 +144,31 @@ class Team:
 				should_upgrade = True
 
 		return should_upgrade
+	
+	def hire_technical_director(self, force_hire=False):
+
+		random_value = random.random()
+
+		if random_value < 0.2 or force_hire is True: # 20% chance they want to hire new TD
+			available_tds = [td for td in self.model.technical_directors if td.wants_to_move is True or td.team is None]
+
+			current_td = self.technical_director
+			if current_td in available_tds:
+				available_tds.remove(current_td)
+
+			if available_tds != []:
+				new_td = random.choice(available_tds)
+
+				if new_td.team is not None: # if currently employed
+					new_td.team.technical_director = None # set his current team TD to None
+				
+				if current_td is not None:
+					current_td.team = None
+
+				self.technical_director = new_td
+				self.technical_director.team = self
+				self.technical_director.wants_to_move = False
+
+				self.model.inbox.new_technical_director_email(self, self.technical_director)
+
+			

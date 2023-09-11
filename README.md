@@ -15,12 +15,13 @@ A summary of current features is provided below;
 - 16 race season. The game advances 1 week at a time.
 - Random race result generated
 - Points (both driver and teams) are updated accordingly
-- Driver statistics are udpated after each race and can be view on the driver page
+- Driver statistics are updated after each race and can be view on the driver page
 - After week 52 a new season is setup
 - Drivers retire
 - New drivers are made available at the start of each season
 - Very basic email system
 - Teams update facilities
+- Technical Directors switch teams (randomly!)
 
 ## Preview
 

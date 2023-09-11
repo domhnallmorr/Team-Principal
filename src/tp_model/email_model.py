@@ -31,3 +31,9 @@ class Inbox:
 
 		email = Email(f"{team.name} have upgraded their {facility}!", msg)
 		self.emails.append(email)
+
+	def new_technical_director_email(self, team, technical_director):
+		msg = email_generation.hire_technical_director_email(team, technical_director)
+
+		email = Email(f"New TD: {team.name} have hired {technical_director.name}!", msg)
+		self.emails.append(email)

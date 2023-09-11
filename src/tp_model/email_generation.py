@@ -39,3 +39,13 @@ def upgrade_facility(team, facility):
 		]
     
 	return return_random_message(messages)
+
+def hire_technical_director_email(team, technical_director):
+	messages = [
+		f"Big news! {team.name} welcomes {technical_director.name} as our new Technical Director.",
+		f"{technical_director.name} joins the ranks of {team.name} as the Technical Director, ready to lead us to success.",
+		f"{team.name} is thrilled to announce the appointment of {technical_director.name} as our new Technical Director.",
+		f"Get ready for a new era at {team.name} with {technical_director.name} taking the helm as Technical Director.",
+    ]
+
+	return return_random_message(messages)
