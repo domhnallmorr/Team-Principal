@@ -1,7 +1,12 @@
 import copy
 
+import pandas as pd
+
 def get_main_window_data(model):
 	data = {}
+	if model.mode == "ui-player":
+		balance = "{:,}".format(model.player_team.balance)
+		data["player_team"] = f"{model.player_team.name} ${balance}"
 
 	if model.season.current_round != "off_season":
 		data["date"] = f"Week {model.season.current_week} - Next Race: {model.season.year}\t{model.season.get_next_race_text()}"
@@ -66,6 +71,25 @@ def get_driver_window_data(model, driver):
 	data["podiums"] = driver.podiums
 	data["seasons_data"] = driver.season_stats_df.values.tolist()
 
+	return data
+
+def update_finance_window(model):
+	data = {}
+
+	df = pd.DataFrame(model.player_team.balance_historical_data)
+	data["historical_balance"] = df
+
+	df = pd.DataFrame(model.player_team.profit_loss_historical_data)
+	data["historical_profit"] = df
+
+	data["profit_this_month"] = model.player_team.profit_this_month
+	data["profit_this_season"] = model.player_team.profit_this_season
+	data["profit_last_season"] = model.player_team.profit_last_season
+
+	data["sponsor_income"] = model.player_team.sponsorship_income
+	data["wages"] = model.player_team.staff_costs_per_week*52
+	data["cost_per_race"] = model.player_team.cost_per_race
+	
 	return data
 
 def get_team_window_data(model, team):

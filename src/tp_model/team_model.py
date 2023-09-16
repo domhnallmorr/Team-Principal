@@ -1,6 +1,8 @@
 import copy
 import logging
 import random
+from datetime import datetime, timedelta
+
 from tp_model import car_model
 
 class Team:
@@ -31,6 +33,7 @@ class Team:
 		self.wins = wins
 		
 		self.setup_variables()
+		self.update_historical_financial_data()
 
 	def setup_variables(self):
 		self.is_player_team = False
@@ -45,28 +48,22 @@ class Team:
 
 		# FINANCIAL STUFF
 		self.budget = 25_000_000
-		self.balance = 1_000_000
+		self.balance = 5_762_308
 		self.cost_per_race = 400_000
 		self.average_staff_wage = 40_000
-		self.number_of_staff = 80
-		self.staff_costs = self.average_staff_wage*self.number_of_staff
-		self.engine_costs = 7_000_000
-		self.tyre_costs = 3_000_000
-		self.chassis_costs = 5_000_000
+		self.staff_costs_per_week = int(self.average_staff_wage*self.workforce/52)
+		self.sponsorship_income = 12_830_316
 
-		# SPONSERS
-		self.engine_cover_sponser = None
-		self.rear_wing_sponser = None
-		self.front_wing_sponser = None
-		self.sidepod_sponser = None
+		self.balance_historical_data = []
+		self.profit_loss_historical_data = []
 
-		self.engine_cover_sponser_next_year = None
-		self.rear_wing_sponser_next_year = None
-		self.front_wing_sponser_next_year = None
-		self.sidepod_sponser_next_year = None
-
-		# PRIZE MONEY
-		self.prize_money = 0
+		self.start_balance = self.balance
+		self.profit_this_month = 0
+		self.profit_this_season = 0
+		self.profit_last_season = "-"
+		# self.engine_costs = 7_000_000
+		# self.tyre_costs = 3_000_000
+		# self.chassis_costs = 5_000_000
 
 	def set_drivers_team(self):
 		for driver in self.drivers:
@@ -84,8 +81,49 @@ class Team:
 	def update_drivers_for_new_season(self):
 		self.drivers = copy.deepcopy(self.drivers_next_year)
 
+	def new_season(self):
+
+		if self.model.player_team == self:
+			# FINANCIAL STUFF
+			self.profit_last_season = self.profit_this_season
+			self.profit_this_season = 0
+
 	def end_season(self):
 		self.update_facilities()
+
+
+	def update_weekly_finances(self):
+		self.balance -= self.staff_costs_per_week
+
+		self.profit_this_season = self.balance - self.start_balance
+		self.update_historical_financial_data()
+
+	def account_for_race_costs(self):
+		self.balance -= self.cost_per_race
+
+		# sponsorship income
+		self.balance += int(self.sponsorship_income/self.model.season.get_number_of_races())
+
+	def update_historical_financial_data(self):
+		self.balance_historical_data.append({"Timestamp": datetime(self.model.season.year, 1, 1) + timedelta(weeks=self.model.season.current_week - 1), "Balance": self.balance})
+
+		# Remove data older than 2 years
+		two_years_ago = self.model.season.year - 2
+		self.balance_historical_data = [entry for entry in self.balance_historical_data if entry["Timestamp"].year >= two_years_ago]
+
+		# Update profit/loss over last 4 weeks
+		if len(self.balance_historical_data) >= 4:
+			current_balance = self.balance_historical_data[-1]["Balance"]
+			four_weeks_ago_balance = self.balance_historical_data[-4]["Balance"]
+			self.profit_this_month = current_balance - four_weeks_ago_balance
+			self.profit_loss_historical_data.append({"Timestamp": self.balance_historical_data[-1]["Timestamp"], "Profit_Loss": self.profit_this_month})
+		else: # don't have 4 weeks of data yet
+			self.profit_this_month = self.profit_this_season
+
+		self.profit_loss_historical_data.append({"Timestamp": self.balance_historical_data[-1]["Timestamp"], "Profit_Loss": self.profit_this_month})
+
+		# Remove data older than 2 years
+		self.profit_loss_historical_data = [entry for entry in self.profit_loss_historical_data if entry["Timestamp"].year >= two_years_ago]
 
 	def update_facilities(self):
 		self.wind_tunnel -= 4

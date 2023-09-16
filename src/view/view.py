@@ -3,7 +3,7 @@ import copy
 from tkinter import ttk
 from tkinter import *
 from view import main_window, calender_window, circuit_window, driver_window, main_race_window, standings_window, race_weekend_window, results_window
-from view import email_window, team_window, tp_icons
+from view import email_window, expenditure_window, finance_window, finance_summary_window, income_window, team_window, tp_icons
 from tkinter import font as tkfont
 
 import customtkinter
@@ -60,6 +60,14 @@ class View:
 		self.results_window = results_window.ResultsWindow(self.main_window.page_frame, self)
 		self.team_window = team_window.TeamWindow(self.main_window.page_frame, self)
 		
+		self.finance_window = finance_window.FinanceWindow(self.main_window.page_frame, self)
+		self.finance_summary_window = finance_summary_window.FinanceSummaryWindow(self.finance_window.summary_tab, self)
+		self.finance_summary_window.grid(row=0, column=0, sticky="NSEW")
+		self.income_window = income_window.IncomeWindow(self.finance_window.income_tab, self)
+		self.income_window.grid(row=0, column=0, sticky="NSEW")
+		self.expenditure_window = expenditure_window.ExpenditureWindow(self.finance_window.expenditure_tab, self)
+		self.expenditure_window.grid(row=0, column=0, sticky="NSEW")
+		
 		self.main_race_window = main_race_window.MainRaceWindow(self.controller.app, self)
 		
 		
@@ -81,6 +89,10 @@ class View:
 		elif window == "email":
 			self.email_window.grid(row=0, column=0, sticky="NSEW")
 			self.current_window = self.email_window
+
+		elif window == "finance":
+			self.finance_window.grid(row=0, column=0, sticky="NSEW")
+			self.current_window = self.finance_window
 
 		elif window == "standings":
 			self.standings_window.grid(row=0, column=0, sticky="NSEW")

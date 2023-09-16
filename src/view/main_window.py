@@ -54,6 +54,9 @@ class MainWindow(customtkinter.CTkFrame):
 					      command=lambda window="calender": self.view.change_window(window))
 		self.calender_btn.grid(row=4, column=0, padx=self.view.padx, pady=self.view.pady, sticky="NSEW")
 
+		self.finances_btn = customtkinter.CTkButton(master=self.sidebar_frame, text="Finances",
+					      command=lambda window="finance": self.view.change_window(window))
+		self.finances_btn.grid(row=5, column=0, padx=self.view.padx, pady=self.view.pady, sticky="NSEW")
 
 		self.advance_btn = customtkinter.CTkButton(master=self.sidebar_frame, text="Advance", fg_color=self.view.success_color,
 					     							hover_color=self.view.success_color_darker, command=self.view.controller.advance)
@@ -66,6 +69,9 @@ class MainWindow(customtkinter.CTkFrame):
 			self.advance_btn.configure(text="Go To Race Weekend", command=lambda window="race_weekend": self.view.change_window(window))
 		else:
 			self.advance_btn.configure(text="Advance")
+
+		if "player_team" in data.keys():
+			self.header_label.configure(text=data["player_team"])
 		
 
 	def update_advance_btn(self, mode):

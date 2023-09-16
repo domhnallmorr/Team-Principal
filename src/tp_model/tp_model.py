@@ -6,7 +6,7 @@ from tp_model import driver_database, email_model, season_model, team_model, tra
 from race_model import race_model, participant
 
 class TPModel:
-	def __init__(self, mode="ui"):
+	def __init__(self, mode="ui-player"):
 		self.mode = mode
 		self.setup_variables()
 		self.season = season_model.Season(self)
@@ -20,6 +20,7 @@ class TPModel:
 		self.season.setup_new_season(update_year=False)
 
 		self.player_team = self.get_instance_by_name("Moretti", "Team")
+		self.player_team.is_player_team = True
 
 	def setup_variables(self):
 		self.drivers = []
@@ -64,6 +65,9 @@ class TPModel:
 
 		self.season.current_week += 1
 
+		if self.mode == "ui-player":
+			self.player_team.update_weekly_finances()
+
 		if self.season.current_week == 53:
 			self.season.setup_new_season()
 			new_season = True
@@ -71,6 +75,9 @@ class TPModel:
 			if self.season.current_round != "off_season":
 				if self.season.current_week == self.season.calender[self.season.current_round][0]:
 					self.in_race_week = True
+					if self.mode == "ui-player":
+						self.player_team.account_for_race_costs()	
+
 				else:
 					self.in_race_week = False
 

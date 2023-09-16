@@ -29,6 +29,8 @@ A summary of current features is provided below;
 
 ![Circuit](images/team_page.PNG)
 
+![Circuit](images/finance_page.PNG)
+
 ![Circuit](images/driver_page.PNG)
 
 ![Circuit](images/email_page.PNG)

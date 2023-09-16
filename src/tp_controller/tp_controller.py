@@ -30,6 +30,12 @@ class TPController:
 		data = update_window_functions.update_email_window(self.model)
 		self.view.email_window.update_window(data)
 
+	def update_finance_window(self):
+		data = update_window_functions.update_finance_window(self.model)
+		self.view.finance_summary_window.update_window(data)
+		self.view.income_window.update_window(data)
+		self.view.expenditure_window.update_window(data)
+
 	def update_standings_window(self):
 		data = update_window_functions.get_standings_window_data(self.model)
 		self.view.standings_window.update_window(data)
@@ -58,6 +64,7 @@ class TPController:
 		self.update_main_window()
 		self.update_standings_window()
 		self.update_email_window()
+		self.update_finance_window()
 		self.update_calender_window(self.model.season.year)
 
 		if is_new_season is True:
@@ -82,7 +89,6 @@ class TPController:
 		self.update_calender_window(self.model.season.year)
 		
 		self.view.main_window.update_advance_btn("advance")
-
 
 	def show_race_result(self, year, race_idx):
 		data = update_window_functions.get_previous_result(self.model, year, race_idx)

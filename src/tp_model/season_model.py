@@ -131,6 +131,11 @@ class Season:
 		# Track results
 		self.previous_results[self.year] = copy.deepcopy(self.calender)
 
+		# Update teams
+		if update_year is True:
+			for team in self.model.teams:
+				team.new_season()
+
 		# Handle Technical_directors switching teams
 		team_database.add_technical_directors(self.model, self.year)
 
