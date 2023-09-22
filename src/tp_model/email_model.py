@@ -37,3 +37,9 @@ class Inbox:
 
 		email = Email(f"New TD: {team.name} have hired {technical_director.name}!", msg)
 		self.emails.append(email)
+
+	def new_sponsor_income_email(self, team):
+		msg = email_generation.sponsor_income_update_email(team)
+
+		email = Email(f"Sponsor Income Update", msg)
+		self.emails.append(email)

@@ -21,5 +21,5 @@ class ExpenditureWindow(customtkinter.CTkFrame):
 		pass
 
 	def update_window(self, data):
-		self.wages_label.configure(text=f"Sponsor Income: ${data['wages']:,}")
+		self.wages_label.configure(text=f"Wages: ${data['wages']:,}")
 		self.race_label.configure(text=f"Cost per Race: ${data['cost_per_race']:,}")

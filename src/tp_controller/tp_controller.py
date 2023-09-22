@@ -13,6 +13,8 @@ class TPController:
 		self.update_main_window()
 		self.update_calender_window(self.model.season.year)
 		self.update_standings_window()
+		self.update_sponsors_window()
+		self.update_finance_window()
 
 	def setup_driver_images(self):
 		driver_image_data = self.model.get_driver_image_data()
@@ -35,6 +37,10 @@ class TPController:
 		self.view.finance_summary_window.update_window(data)
 		self.view.income_window.update_window(data)
 		self.view.expenditure_window.update_window(data)
+
+	def update_sponsors_window(self):
+		data = update_window_functions.get_sponsors_window_data(self.model)
+		self.view.sponsors_window.update_window(data)
 
 	def update_standings_window(self):
 		data = update_window_functions.get_standings_window_data(self.model)

@@ -1,6 +1,6 @@
 import os
 import sqlite3
-from tp_model import team_model, team_principal_staff_model, technical_director_model
+from tp_model import commercial_manager_model, team_model, team_principal_staff_model, technical_director_model
 
 def add_teams(model):
 
@@ -22,6 +22,7 @@ def add_teams(model):
 	hq_idx = column_names.index("Headquarters")
 	tp_idx = column_names.index("TP")
 	technical_director_idx = column_names.index("Technical_Director")
+	commercial_manager_idx = column_names.index("Commercial_Manager")
 	workforce_idx = column_names.index("Workforce")
 
 	# FACILITIES
@@ -48,6 +49,7 @@ def add_teams(model):
 		hq = team[hq_idx]
 		tp = model.get_instance_by_name(team[tp_idx], "TeamPrincipal")
 		technical_director = model.get_instance_by_name(team[technical_director_idx], "TechnicalDirector")
+		commercial_manager = model.get_instance_by_name(team[commercial_manager_idx], "commercialManager")
 
 		wind_tunnel = team[windtunnel_idx]
 		super_computer = team[super_computer_idx]
@@ -64,7 +66,7 @@ def add_teams(model):
 		model.teams.append(team_model.Team(model, name, speed, car_failure_probability, nationality, hq, tp,
 									 technical_director, drivers_championships, constructors_championships, wins,
 									wind_tunnel, super_computer, engine_factory, chassis_workshop, brake_center,
-									workforce))
+									workforce, commercial_manager))
 
 		model.teams[-1].drivers = [team[driver_1_idx], team[driver_2_idx]]
 		model.teams[-1].drivers_next_year = [team[driver_1_idx], team[driver_2_idx]]
@@ -126,3 +128,30 @@ def add_technical_directors(model, year):
 		resource_management = person[resource_management_idx]
 
 		model.technical_directors.append(technical_director_model.TechnicalDirector(name, age, technical_knowledge, resource_management))
+
+def add_commercial_maangers(model, year):
+	conn = sqlite3.connect(f"{os.getcwd()}\\tp_model\\team_principal.db")
+
+	# GET COLUMN NAMES
+	table_name = "commercial_managers"
+	cursor = conn.execute(f'PRAGMA table_info({table_name})')
+	columns = cursor.fetchall()
+	column_names = [column[1] for column in columns]
+
+	# GET COLUMN INDECES
+	name_idx = column_names.index("Name")
+	age_idx = column_names.index("Age")
+	negotiation_skill_idx = column_names.index("Negotiation_skill")
+	reputation_idx = column_names.index("Reputation")
+
+	cursor = conn.cursor()
+	cursor.execute(f"SELECT * FROM commercial_managers WHERE Year_Appear = '{str(year)}'")
+	staff = cursor.fetchall()
+
+	for person in staff:
+		name = person[name_idx]
+		age = person[age_idx]
+		negotiation_skill = person[negotiation_skill_idx]
+		reputation = person[reputation_idx]
+
+		model.commercial_managers.append(commercial_manager_model.CommercialManager(name, age, negotiation_skill, reputation))

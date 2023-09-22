@@ -73,6 +73,13 @@ def get_driver_window_data(model, driver):
 
 	return data
 
+def get_sponsors_window_data(model):
+	data = {}
+
+	data["commercial_manager"] = model.player_team.commercial_manager.name
+
+	return data
+
 def update_finance_window(model):
 	data = {}
 

@@ -3,7 +3,7 @@ import copy
 from tkinter import ttk
 from tkinter import *
 from view import main_window, calender_window, circuit_window, driver_window, main_race_window, standings_window, race_weekend_window, results_window
-from view import email_window, expenditure_window, finance_window, finance_summary_window, income_window, team_window, tp_icons
+from view import email_window, expenditure_window, finance_window, finance_summary_window, income_window, sponsors_window, team_window, tp_icons
 from tkinter import font as tkfont
 
 import customtkinter
@@ -59,6 +59,7 @@ class View:
 		self.race_weekend_window = race_weekend_window.RaceWeekendWindow(self.main_window.page_frame, self)
 		self.results_window = results_window.ResultsWindow(self.main_window.page_frame, self)
 		self.team_window = team_window.TeamWindow(self.main_window.page_frame, self)
+		self.sponsors_window = sponsors_window.SponsorsWindow(self.main_window.page_frame, self)
 		
 		self.finance_window = finance_window.FinanceWindow(self.main_window.page_frame, self)
 		self.finance_summary_window = finance_summary_window.FinanceSummaryWindow(self.finance_window.summary_tab, self)
@@ -93,6 +94,10 @@ class View:
 		elif window == "finance":
 			self.finance_window.grid(row=0, column=0, sticky="NSEW")
 			self.current_window = self.finance_window
+
+		elif window == "sponsors":
+			self.sponsors_window.grid(row=0, column=0, sticky="NSEW")
+			self.current_window = self.sponsors_window
 
 		elif window == "standings":
 			self.standings_window.grid(row=0, column=0, sticky="NSEW")

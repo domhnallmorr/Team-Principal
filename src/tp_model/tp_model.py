@@ -14,6 +14,7 @@ class TPModel:
 		self.setup_default_drivers()
 		team_database.add_team_principals(self, "default")
 		team_database.add_technical_directors(self, "default")
+		team_database.add_commercial_maangers(self, "default")
 		team_database.add_teams(self)
 
 		self.setup_tracks()
@@ -28,6 +29,7 @@ class TPModel:
 		self.tracks = []
 		self.team_principals = []
 		self.technical_directors = []
+		self.commercial_managers = []
 		
 		self.in_race_week = False
 		self.race_result = None
@@ -88,6 +90,8 @@ class TPModel:
         
 		if class_type == "Team":
 			instance_list = self.teams
+		elif class_type == "commercialManager":
+			instance_list = self.commercial_managers
 		elif class_type == "Driver":
 			instance_list = self.drivers
 		elif class_type == "TeamPrincipal":

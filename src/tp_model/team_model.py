@@ -9,7 +9,7 @@ class Team:
 	def __init__(self, model, name, car_speed, car_failure_probability, nationality, headquarters, tp,
 			  technical_director, drivers_championships, constructors_championships, wins,
 			  wind_tunnel, super_computer, engine_factory, chassis_workshop, brake_center,
-			  workforce):
+			  workforce, commercial_manager):
 		self.model = model
 		self.car = car_model.Car(self, car_speed, car_failure_probability)
 		self.name = name
@@ -18,6 +18,9 @@ class Team:
 		self.team_principal = tp
 		self.technical_director = technical_director
 		self.technical_director.team = self
+		
+		self.commercial_manager = commercial_manager
+		self.commercial_manager.team = self
 		
 		# FACILITIES
 		self.wind_tunnel = wind_tunnel
@@ -88,9 +91,11 @@ class Team:
 			self.profit_last_season = self.profit_this_season
 			self.profit_this_season = 0
 
+			self.sponsorship_income = self.commercial_manager.negotiate_new_deal()
+			self.model.inbox.new_sponsor_income_email(self)
+
 	def end_season(self):
 		self.update_facilities()
-
 
 	def update_weekly_finances(self):
 		self.balance -= self.staff_costs_per_week

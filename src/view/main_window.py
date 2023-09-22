@@ -58,6 +58,10 @@ class MainWindow(customtkinter.CTkFrame):
 					      command=lambda window="finance": self.view.change_window(window))
 		self.finances_btn.grid(row=5, column=0, padx=self.view.padx, pady=self.view.pady, sticky="NSEW")
 
+		self.sponsors_btn = customtkinter.CTkButton(master=self.sidebar_frame, text="Sponsors",
+					      command=lambda window="sponsors": self.view.change_window(window))
+		self.sponsors_btn.grid(row=6, column=0, padx=self.view.padx, pady=self.view.pady, sticky="NSEW")
+
 		self.advance_btn = customtkinter.CTkButton(master=self.sidebar_frame, text="Advance", fg_color=self.view.success_color,
 					     							hover_color=self.view.success_color_darker, command=self.view.controller.advance)
 		self.advance_btn.grid(row=20, column=0, padx=self.view.padx, pady=self.view.pady, sticky="SW")
