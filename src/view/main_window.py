@@ -76,6 +76,11 @@ class MainWindow(customtkinter.CTkFrame):
 
 		if "player_team" in data.keys():
 			self.header_label.configure(text=data["player_team"])
+
+		if data["new_mails"] > 0:
+			self.email_btn.configure(text=f"Email ({data['new_mails']})")
+		else:
+			self.email_btn.configure(text=f"Email")
 		
 
 	def update_advance_btn(self, mode):

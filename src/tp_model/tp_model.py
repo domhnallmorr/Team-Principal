@@ -63,6 +63,7 @@ class TPModel:
 		return is_new_seaason	
 	
 	def advance_one_week(self):
+		self.inbox.new_mails = 0
 		new_season = False
 
 		self.season.current_week += 1

@@ -45,6 +45,8 @@ class Team:
 
 		self.driver_changes_next_year = []
 
+		self.position_last_year = None
+
 		# Facilities
 		self.wind_tunnel_last_upgrade_year = None # when the tunnel was last upgraded
 		self.wind_tunnel_tracker = [self.wind_tunnel]
@@ -56,6 +58,8 @@ class Team:
 		self.average_staff_wage = 40_000
 		self.staff_costs_per_week = int(self.average_staff_wage*self.workforce/52)
 		self.sponsorship_income = 12_830_316
+		self.merchandise_income = 0
+		self.prize_money = 0
 
 		self.balance_historical_data = []
 		self.profit_loss_historical_data = []
@@ -94,11 +98,24 @@ class Team:
 			self.sponsorship_income = self.commercial_manager.negotiate_new_deal()
 			self.model.inbox.new_sponsor_income_email(self)
 
+			# PRIZE MONEY
+			prize_money = [85_000_000, 70_000_000, 59_000_000, 47_000_000, 37_000_000, 31_000_000, 27_000_000, 22_000_000, 17_000_000, 12_000_000, 9_000_000]
+
+			self.prize_money = prize_money[self.position_last_year-1] + random.randint(-3_000_000, 5_000_000)
+			self.model.inbox.new_prize_money_email(self, self.prize_money)
+			self.balance += self.prize_money
+
 	def end_season(self):
 		self.update_facilities()
 
+		for idx, team in enumerate(self.model.season.team_standings):
+			if team[0] == self.name:
+				self.position_last_year = idx + 1
+
 	def update_weekly_finances(self):
 		self.balance -= self.staff_costs_per_week
+		self.merchandise_income = self.calculate_merchandise_income()
+		self.balance += self.merchandise_income
 
 		self.profit_this_season = self.balance - self.start_balance
 		self.update_historical_financial_data()
@@ -215,3 +232,10 @@ class Team:
 				self.model.inbox.new_technical_director_email(self, self.technical_director)
 
 			
+	def calculate_merchandise_income(self):
+		if self.model.season.current_round == "off_season":
+			income = random.randint(5_000, 8_000)
+		else:
+			income = random.randint(15_000, 30_000)
+		
+		return income

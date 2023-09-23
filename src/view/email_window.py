@@ -40,6 +40,7 @@ class EmailWindow(customtkinter.CTkFrame):
 		self.email_list.grid(row=1, column=1, columnspan=1, padx=self.view.padx, pady=self.view.pady, sticky="NSEW")
 		self.email_list.column("#0", stretch=tk.YES)
 		self.email_list.bind('<<TreeviewSelect>>',lambda event, : self.single_click(event))
+		self.email_list.tag_configure('bold', font=("Verdana", 12, "bold"))
 
 		ctk_textbox_scrollbar = customtkinter.CTkScrollbar(self.email_list_frame, command=self.email_list.yview)
 		ctk_textbox_scrollbar.grid(row=1, column=2, columnspan=1, padx=self.view.padx, pady=self.view.pady, sticky="NSEW")
@@ -55,7 +56,7 @@ class EmailWindow(customtkinter.CTkFrame):
 		self.buttons = []
 		self.emails = copy.deepcopy(data["emails"])
 
-		data = [[m[0]] for m in  self.emails]
+		data = [[m[0]] for m in self.emails]
 		treeview_functions.write_data_to_treeview_general(self.email_list, "replace", data)
 
 

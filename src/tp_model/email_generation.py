@@ -59,3 +59,13 @@ def sponsor_income_update_email(team):
     ]
 
 	return return_random_message(messages)
+
+def prize_money_email(team, prize_money_amount):
+	messages = [
+        f"Great news! {team.name} has received a total of ${prize_money_amount:,} million in prize money for the previous season.",
+        f"{team.name} is pleased to announce that we have earned ${prize_money_amount:,} million in prize money from last year's season.",
+        f"{team.name} celebrates a successful season, culminating in ${prize_money_amount:,} million in prize money.",
+        f"{team.name} thanks our hardworking team members for their dedication in earning ${prize_money_amount:,} million in prize money.",
+    ]
+
+	return return_random_message(messages)

@@ -93,6 +93,7 @@ class TPController:
 		self.update_standings_window()
 		self.update_main_window()
 		self.update_calender_window(self.model.season.year)
+		self.update_email_window()
 		
 		self.view.main_window.update_advance_btn("advance")
 

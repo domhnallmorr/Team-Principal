@@ -12,7 +12,9 @@ def get_main_window_data(model):
 		data["date"] = f"Week {model.season.current_week} - Next Race: {model.season.year}\t{model.season.get_next_race_text()}"
 	else:
 		data["date"] = f"Week {model.season.current_week} - Off Season {model.season.year}"
+	
 	data["in_race_week"] = model.in_race_week
+	data["new_mails"] = model.inbox.new_mails
 
 	return data
 
@@ -77,6 +79,7 @@ def get_sponsors_window_data(model):
 	data = {}
 
 	data["commercial_manager"] = model.player_team.commercial_manager.name
+	data["reputation"] = model.player_team.commercial_manager.reputation
 
 	return data
 
@@ -94,6 +97,7 @@ def update_finance_window(model):
 	data["profit_last_season"] = model.player_team.profit_last_season
 
 	data["sponsor_income"] = model.player_team.sponsorship_income
+	data["merchandise_income"] = model.player_team.merchandise_income
 	data["wages"] = model.player_team.staff_costs_per_week*52
 	data["cost_per_race"] = model.player_team.cost_per_race
 	
