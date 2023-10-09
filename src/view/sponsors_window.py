@@ -23,6 +23,9 @@ class SponsorsWindow(customtkinter.CTkFrame):
 		self.reputation_progressbar = customtkinter.CTkProgressBar(self, orientation="horizontal")
 		self.reputation_progressbar.grid(row=2, column=1, padx=self.view.padx, pady=self.view.pady, sticky="NSEW")
 
+		self.hire_btn = customtkinter.CTkButton(master=self, text="Hire Commercial Manager", command=self.view.controller.hire_commercial_manager)
+		self.hire_btn.grid(row=3, column=0, padx=self.view.padx, pady=self.view.pady, sticky="NSEW")
+
 	def configure_grid(self):
 		pass
 

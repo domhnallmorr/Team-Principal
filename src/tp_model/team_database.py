@@ -129,7 +129,7 @@ def add_technical_directors(model, year):
 
 		model.technical_directors.append(technical_director_model.TechnicalDirector(name, age, technical_knowledge, resource_management))
 
-def add_commercial_maangers(model, year):
+def add_commercial_mangers(model, year):
 	conn = sqlite3.connect(f"{os.getcwd()}\\tp_model\\team_principal.db")
 
 	# GET COLUMN NAMES

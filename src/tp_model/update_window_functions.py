@@ -2,6 +2,8 @@ import copy
 
 import pandas as pd
 
+from tp_model import commercial_manager_model
+
 def get_main_window_data(model):
 	data = {}
 	if model.mode == "ui-player":
@@ -32,6 +34,14 @@ def get_calender_window_data(model, year):
 		if len(model.season.previous_results[year][idx]) == 6:
 			race_winner = model.season.previous_results[year][idx][-1][0][0]
 			data["calender"][idx][-1] = race_winner
+
+	return data
+
+def get_car_window_data(model):
+	data = {}
+	team = model.player_team
+
+	data["speed"] = team.car.speed
 
 	return data
 
@@ -101,6 +111,13 @@ def update_finance_window(model):
 	data["wages"] = model.player_team.staff_costs_per_week*52
 	data["cost_per_race"] = model.player_team.cost_per_race
 	
+	return data
+
+def get_hire_commercial_manager_data(model):
+	data = {}
+
+	data["commercial_managers"] = commercial_manager_model.get_available_commercial_managers(model)
+
 	return data
 
 def get_team_window_data(model, team):

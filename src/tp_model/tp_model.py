@@ -14,7 +14,7 @@ class TPModel:
 		self.setup_default_drivers()
 		team_database.add_team_principals(self, "default")
 		team_database.add_technical_directors(self, "default")
-		team_database.add_commercial_maangers(self, "default")
+		team_database.add_commercial_mangers(self, "default")
 		team_database.add_teams(self)
 
 		self.setup_tracks()
@@ -132,6 +132,16 @@ class TPModel:
 
 		if self.season.current_round == len(self.season.calender):
 			self.season.end_season()
+
+	def setup_race(self, run_race=True):
+		track = self.get_instance_by_name(self.season.get_next_track(), "Track")
+		participants = []
+		for d in self.drivers:
+			if d.team is not None:
+				car = d.team.car
+				participants.append(participant.Participant(d, car, track))
+
+		self.race_model = race_model.RaceModel(participants, track, run_race)
 
 	def get_driver_image_data(self):
 		return {d.name: d.image_data for d in self.drivers}

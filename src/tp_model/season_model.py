@@ -124,7 +124,10 @@ class Season:
 			if update_year is True:
 				driver.increase_age()
 
+		# Add drivers/staff
+		team_database.add_commercial_mangers(self.model, self.year)
 		driver_database.add_drivers(self.model, self.year)
+
 		self.setup_initial_standings()
 		self.handle_driver_retirements()
 

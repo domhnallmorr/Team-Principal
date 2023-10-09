@@ -1,4 +1,12 @@
+import copy
 import random
+
+def get_available_commercial_managers(model):
+
+	commercial_managers = copy.deepcopy(model.commercial_managers)
+
+	return commercial_managers
+
 
 class CommercialManager:
 	def __init__(self, name, age, negotiation_skill, reputation):

@@ -4,9 +4,11 @@ from tkinter import ttk
 from tkinter import *
 from view import main_window, calender_window, circuit_window, driver_window, main_race_window, standings_window, race_weekend_window, results_window
 from view import email_window, expenditure_window, finance_window, finance_summary_window, income_window, sponsors_window, team_window, tp_icons
+from view import car_window
 from tkinter import font as tkfont
 
 import customtkinter
+from CTkMessagebox import CTkMessagebox
 from tksheet import Sheet
 
 class View:
@@ -19,6 +21,8 @@ class View:
 
 		self.success_color = "#33871C"
 		self.success_color_darker = "#194F0A"
+		self.warning_color = "#f56342"
+		self.warning_color_darker = "#e0340d"
 
 		self.page_title_font = ("Verdana", 30)
 		self.header1_font = ("Verdana", 24)
@@ -61,6 +65,7 @@ class View:
 		self.team_window = team_window.TeamWindow(self.main_window.page_frame, self)
 		self.sponsors_window = sponsors_window.SponsorsWindow(self.main_window.page_frame, self)
 		
+		self.car_window = car_window.CarWindow(self.main_window.page_frame, self)
 		self.finance_window = finance_window.FinanceWindow(self.main_window.page_frame, self)
 		self.finance_summary_window = finance_summary_window.FinanceSummaryWindow(self.finance_window.summary_tab, self)
 		self.finance_summary_window.grid(row=0, column=0, sticky="NSEW")
@@ -78,6 +83,10 @@ class View:
 		if window == "calender":
 			self.calender_window.grid(row=0, column=0, sticky="NSEW")
 			self.current_window = self.calender_window
+
+		elif window == "car":
+			self.car_window.grid(row=0, column=0, sticky="NSEW")
+			self.current_window = self.car_window
 
 		elif window == "circuit":
 			self.circuit_window.grid(row=0, column=0, sticky="NSEW")
@@ -148,3 +157,9 @@ class View:
 	def setup_track_maps(self, tracks):
 		for track in tracks:
 			tp_icons.create_track_map(self, track.name, track.track_map)
+
+	def show_success_message(self, title, msg):
+		CTkMessagebox(title=title, message=msg, icon="check", option_1="OK")
+
+	def show_warning_message(self, title, msg):
+		 CTkMessagebox(title=title, message=msg, icon="warning", option_1="OK")

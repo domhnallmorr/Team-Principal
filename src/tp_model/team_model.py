@@ -15,6 +15,8 @@ class Team:
 		self.name = name
 		self.nationality = nationality
 		self.headquarters = headquarters
+		
+		# STAFF
 		self.team_principal = tp
 		self.technical_director = technical_director
 		self.technical_director.team = self
@@ -72,6 +74,9 @@ class Team:
 		# self.tyre_costs = 3_000_000
 		# self.chassis_costs = 5_000_000
 
+		# STAFF
+		self.commercial_manager_next_year = None
+
 	def set_drivers_team(self):
 		for driver in self.drivers:
 			driver = self.model.get_instance_by_name(driver, "Driver")
@@ -104,6 +109,9 @@ class Team:
 			self.prize_money = prize_money[self.position_last_year-1] + random.randint(-3_000_000, 5_000_000)
 			self.model.inbox.new_prize_money_email(self, self.prize_money)
 			self.balance += self.prize_money
+
+			if self.commercial_manager_next_year is not None:
+				self.commercial_manager = self.commercial_manager_next_year
 
 	def end_season(self):
 		self.update_facilities()
