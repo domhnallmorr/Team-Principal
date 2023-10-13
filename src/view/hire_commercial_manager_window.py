@@ -20,11 +20,10 @@ def launch_window(controller, data):
 class HireCommercialManagerWindow(customtkinter.CTkToplevel):
 	def __init__(self, *args, **kwargs):
 		super().__init__(*args, **kwargs)
-		print(*args)
-		self.geometry("400x300")
+		
+		self.geometry("700x300")
         
-		# self.data = data
-
+		self.title("Hire Commercial Manager")
 		self.button = "cancel"
 		self.grab_set()
 

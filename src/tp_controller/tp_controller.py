@@ -1,5 +1,5 @@
 from tp_model import tp_model, update_window_functions
-from view import view, hire_commercial_manager_window
+from view import view, hire_commercial_manager_window, upgrade_facilities_window
 
 import tkinter as tk
 
@@ -136,3 +136,18 @@ class TPController:
 				msg = f"{hired_manager.name} Will Join the Team at the Start of Next Season!"
 				self.view.show_success_message(title, msg)
 		
+	def upgrade_facility(self):
+
+		data = upgrade_facilities_window.launch_window(self, None)
+
+		if data is not None:
+			self.model.player_team.upgrade_player_facility(data)
+
+			# UPDATE VIEW
+			self.show_player_team_page()
+			self.update_main_window()
+
+			# SHOW POP UP
+			title = "Upgrade Successfull"
+			msg = f"{data['facility']} Upgraded Successfully"
+			self.view.show_success_message(title, msg)

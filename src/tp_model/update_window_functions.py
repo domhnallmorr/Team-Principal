@@ -7,7 +7,7 @@ from tp_model import commercial_manager_model
 def get_main_window_data(model):
 	data = {}
 	if model.mode == "ui-player":
-		balance = "{:,}".format(model.player_team.balance)
+		balance = "{:,}".format(model.player_team.finance_model.balance)
 		data["player_team"] = f"{model.player_team.name} ${balance}"
 
 	if model.season.current_round != "off_season":
@@ -96,20 +96,20 @@ def get_sponsors_window_data(model):
 def update_finance_window(model):
 	data = {}
 
-	df = pd.DataFrame(model.player_team.balance_historical_data)
+	df = pd.DataFrame(model.player_team.finance_model.balance_historical_data)
 	data["historical_balance"] = df
 
-	df = pd.DataFrame(model.player_team.profit_loss_historical_data)
+	df = pd.DataFrame(model.player_team.finance_model.profit_loss_historical_data)
 	data["historical_profit"] = df
 
-	data["profit_this_month"] = model.player_team.profit_this_month
-	data["profit_this_season"] = model.player_team.profit_this_season
-	data["profit_last_season"] = model.player_team.profit_last_season
+	data["profit_this_month"] = model.player_team.finance_model.profit_this_month
+	data["profit_this_season"] = model.player_team.finance_model.profit_this_season
+	data["profit_last_season"] = model.player_team.finance_model.profit_last_season
 
-	data["sponsor_income"] = model.player_team.sponsorship_income
-	data["merchandise_income"] = model.player_team.merchandise_income
-	data["wages"] = model.player_team.staff_costs_per_week*52
-	data["cost_per_race"] = model.player_team.cost_per_race
+	data["sponsor_income"] = model.player_team.finance_model.sponsorship_income
+	data["merchandise_income"] = model.player_team.finance_model.merchandise_income
+	data["wages"] = model.player_team.finance_model.staff_costs_per_week*52
+	data["cost_per_race"] = model.player_team.finance_model.cost_per_race
 	
 	return data
 
@@ -125,6 +125,11 @@ def get_team_window_data(model, team):
 
 	data["name"] = team
 	team = model.get_instance_by_name(team, "Team")
+
+	data["player_team"] = False
+	if team == model.player_team:
+		data["player_team"] = True
+		
 	data["nationality"] = team.nationality
 	data["headquarters"] = team.headquarters
 	data["tp"] = team.team_principal.name

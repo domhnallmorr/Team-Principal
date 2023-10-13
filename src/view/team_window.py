@@ -2,6 +2,8 @@ import customtkinter
 from tksheet import Sheet
 from tkinter import *
 
+from view import upgrade_facilities_window
+
 class TeamWindow(customtkinter.CTkFrame):
 	def __init__(self, master, view):
 		super().__init__(master)
@@ -88,25 +90,30 @@ class TeamWindow(customtkinter.CTkFrame):
 
 
 		# FACILITIES FRAME
-		customtkinter.CTkLabel(self.facilities_frame, text="Wind Tunnel:", anchor="w", font=self.view.normal_font).grid(row=1, column=0, padx=self.view.padx, pady=self.view.pady, sticky="NSEW")
+		self.upgrade_btn_row = 1
+		self.upgrade_btn_col = 0
+		self.upgrade_facility_button = customtkinter.CTkButton(self.facilities_frame, text="Upgrade", command=self.view.controller.upgrade_facility)
+		self.upgrade_facility_button.grid(row=self.upgrade_btn_row, column=self.upgrade_btn_col, padx=self.view.padx, pady=self.view.pady, sticky="W")
+
+		customtkinter.CTkLabel(self.facilities_frame, text="Wind Tunnel:", anchor="w", font=self.view.normal_font).grid(row=3, column=0, padx=self.view.padx, pady=self.view.pady, sticky="NSEW")
 		self.wind_tunnel_progressbar = customtkinter.CTkProgressBar(self.facilities_frame, orientation="horizontal")
-		self.wind_tunnel_progressbar.grid(row=1, column=1, padx=self.view.padx, pady=self.view.pady, sticky="NSEW")
+		self.wind_tunnel_progressbar.grid(row=3, column=1, padx=self.view.padx, pady=self.view.pady, sticky="NSEW")
 
-		customtkinter.CTkLabel(self.facilities_frame, text="Super Computer:", anchor="w", font=self.view.normal_font).grid(row=2, column=0, padx=self.view.padx, pady=self.view.pady, sticky="NSEW")
+		customtkinter.CTkLabel(self.facilities_frame, text="Super Computer:", anchor="w", font=self.view.normal_font).grid(row=4, column=0, padx=self.view.padx, pady=self.view.pady, sticky="NSEW")
 		self.super_computer_progressbar = customtkinter.CTkProgressBar(self.facilities_frame, orientation="horizontal")
-		self.super_computer_progressbar.grid(row=2, column=1, padx=self.view.padx, pady=self.view.pady, sticky="NSEW")
+		self.super_computer_progressbar.grid(row=4, column=1, padx=self.view.padx, pady=self.view.pady, sticky="NSEW")
 
-		customtkinter.CTkLabel(self.facilities_frame, text="Engine Factory:", anchor="w", font=self.view.normal_font).grid(row=3, column=0, padx=self.view.padx, pady=self.view.pady, sticky="NSEW")
+		customtkinter.CTkLabel(self.facilities_frame, text="Engine Factory:", anchor="w", font=self.view.normal_font).grid(row=5, column=0, padx=self.view.padx, pady=self.view.pady, sticky="NSEW")
 		self.engine_factory_progressbar = customtkinter.CTkProgressBar(self.facilities_frame, orientation="horizontal")
-		self.engine_factory_progressbar.grid(row=3, column=1, padx=self.view.padx, pady=self.view.pady, sticky="NSEW")
+		self.engine_factory_progressbar.grid(row=5, column=1, padx=self.view.padx, pady=self.view.pady, sticky="NSEW")
 
-		customtkinter.CTkLabel(self.facilities_frame, text="Chassis Workshop:", anchor="w", font=self.view.normal_font).grid(row=4, column=0, padx=self.view.padx, pady=self.view.pady, sticky="NSEW")
+		customtkinter.CTkLabel(self.facilities_frame, text="Chassis Workshop:", anchor="w", font=self.view.normal_font).grid(row=6, column=0, padx=self.view.padx, pady=self.view.pady, sticky="NSEW")
 		self.chassis_workshop_progressbar = customtkinter.CTkProgressBar(self.facilities_frame, orientation="horizontal")
-		self.chassis_workshop_progressbar.grid(row=4, column=1, padx=self.view.padx, pady=self.view.pady, sticky="NSEW")
+		self.chassis_workshop_progressbar.grid(row=6, column=1, padx=self.view.padx, pady=self.view.pady, sticky="NSEW")
 
-		customtkinter.CTkLabel(self.facilities_frame, text="Brake Center:", anchor="w", font=self.view.normal_font).grid(row=5, column=0, padx=self.view.padx, pady=self.view.pady, sticky="NSEW")
+		customtkinter.CTkLabel(self.facilities_frame, text="Brake Center:", anchor="w", font=self.view.normal_font).grid(row=7, column=0, padx=self.view.padx, pady=self.view.pady, sticky="NSEW")
 		self.brake_center_progressbar = customtkinter.CTkProgressBar(self.facilities_frame, orientation="horizontal")
-		self.brake_center_progressbar.grid(row=5, column=1, padx=self.view.padx, pady=self.view.pady, sticky="NSEW")
+		self.brake_center_progressbar.grid(row=7, column=1, padx=self.view.padx, pady=self.view.pady, sticky="NSEW")
 
 	def update_window(self, data):	
 		self.title_label.configure(text=f'{data["name"]}')
@@ -133,6 +140,11 @@ class TeamWindow(customtkinter.CTkFrame):
 		self.wins_label.configure(text=f"Wins: {data['wins']}")
 
 		# FACILITIES
+		if data["player_team"] is True:
+			self.upgrade_facility_button.grid(row=self.upgrade_btn_row, column=self.upgrade_btn_col, padx=self.view.padx, pady=self.view.pady, sticky="W")
+		else:
+			self.upgrade_facility_button.grid_forget()
+
 		self.wind_tunnel_progressbar.set(data["wind_tunnel"]/100)
 		self.super_computer_progressbar.set(data["super_computer"]/100)
 		self.engine_factory_progressbar.set(data["engine_factory"]/100)

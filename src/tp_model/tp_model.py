@@ -69,7 +69,7 @@ class TPModel:
 		self.season.current_week += 1
 
 		if self.mode == "ui-player":
-			self.player_team.update_weekly_finances()
+			self.player_team.finance_model.update_weekly_finances()
 
 		if self.season.current_week == 53:
 			self.season.setup_new_season()
@@ -79,7 +79,7 @@ class TPModel:
 				if self.season.current_week == self.season.calender[self.season.current_round][0]:
 					self.in_race_week = True
 					if self.mode == "ui-player":
-						self.player_team.account_for_race_costs()	
+						self.player_team.finance_model.account_for_race_costs()	
 
 				else:
 					self.in_race_week = False

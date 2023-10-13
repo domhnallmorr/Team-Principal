@@ -52,10 +52,10 @@ def hire_technical_director_email(team, technical_director):
 
 def sponsor_income_update_email(team):
 	messages = [
-		f"Exciting news for the upcoming season! {team.name} is thrilled to announce a sponsorship income of ${team.sponsorship_income:,} million.",
-		f"{team.name} is proud to reveal that we have secured sponsorship worth ${team.sponsorship_income:,} million for the upcoming season.",
-		f"Get ready for a fantastic season ahead! {team.name} has secured a sponsorship deal worth ${team.sponsorship_income:,} million.",
-		f"{team.name} is grateful to our sponsors for their support, contributing ${team.sponsorship_income:,} million to our racing endeavors this season.",
+		f"Exciting news for the upcoming season! {team.name} is thrilled to announce a sponsorship income of ${team.finance_model.sponsorship_income:,} million.",
+		f"{team.name} is proud to reveal that we have secured sponsorship worth ${team.finance_model.sponsorship_income:,} million for the upcoming season.",
+		f"Get ready for a fantastic season ahead! {team.name} has secured a sponsorship deal worth ${team.finance_model.sponsorship_income:,} million.",
+		f"{team.name} is grateful to our sponsors for their support, contributing ${team.finance_model.sponsorship_income:,} million to our racing endeavors this season.",
     ]
 
 	return return_random_message(messages)
